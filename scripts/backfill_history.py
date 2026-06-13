@@ -21,7 +21,7 @@ _old_print = builtins.print
 builtins.print = lambda *a, **k: None
 
 from stock_analyzer.data.loader import load_sw_classification
-from stock_analyzer.data.kline import fetch_kline_batch
+from stock_analyzer.data.kline import fetch_kline, fetch_kline_batch
 from stock_analyzer.analysis.scorer import (
     score_industries, get_dynamic_market_m,
     score_stocks, score_stocks_v2, select_top_n,
