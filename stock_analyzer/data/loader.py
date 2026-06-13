@@ -10,14 +10,19 @@ def _find_classification_file() -> str:
     """查找可用的行业分类数据文件，优先 xls 再找 json"""
     if os.path.exists(SW_XLS):
         return SW_XLS
-    # 尝试项目目录下的 data/sw.json
-    for p in [
+    # 尝试各种可能的路径
+    paths_to_try = [
+        # 从当前文件位置推算项目根 (stock_analyzer/data/ → 项目根)
         os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "sw.json"),
+        # 当前工作目录
         os.path.join(os.getcwd(), "data", "sw.json"),
-    ]:
+        # 直接相对于脚本所在目录
+        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data", "sw.json"),
+    ]
+    for p in paths_to_try:
         if os.path.exists(p):
             return p
-    return SW_XLS  # fallback，让调用方处理错误
+    return SW_XLS  # fallback
 
 
 def load_sw_classification(xls_path: str = None) -> pd.DataFrame:
