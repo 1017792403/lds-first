@@ -40,6 +40,11 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: python scripts/backfill_history.py
 
+      - name: Verify with actual market data
+        env:
+          PYTHONIOENCODING: utf-8
+        run: python scripts/verify_review.py
+
       - name: Push results to repo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
