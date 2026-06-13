@@ -9,6 +9,9 @@ on:
   # 允许手动触发
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: write
 
@@ -37,7 +40,7 @@ jobs:
 
       - name: Run all strategies
         env:
-          TEMP: ${{ runner.temp }}
+          TEMP: /home/runner/work/_temp
           PYTHONIOENCODING: utf-8
         run: python scripts/gh_run.py
 
@@ -46,25 +49,21 @@ jobs:
         with:
           name: stock-results-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/result*.json
-            ${{ runner.temp }}/stock_reports/
-            ${{ runner.temp }}/review_history.json
+            /home/runner/work/_temp/*.json
+            /home/runner/work/_temp/stock_reports/
           retention-days: 30
 
-      - name: Save review history to repo
-        run: |
-          mkdir -p data
-          if [ -f "${{ runner.temp }}/review_history.json" ]; then
-            cp "${{ runner.temp }}/review_history.json" data/review_history.json
-          fi
-          if [ -f "${{ runner.temp }}/result.json" ]; then
-            cp "${{ runner.temp }}/result.json" data/latest_result.json
-          fi
-
-      - name: Commit results
+      - name: Save and push results to repo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          mkdir -p data
+          if [ -f /home/runner/work/_temp/review_history.json ]; then
+            cp /home/runner/work/_temp/review_history.json data/review_history.json
+          fi
+          if [ -f /home/runner/work/_temp/result.json ]; then
+            cp /home/runner/work/_temp/result.json data/latest_result.json
+          fi
           git config --local user.email "stock-analyzer[bot]@users.noreply.github.com"
           git config --local user.name "Stock Analyzer Bot"
           git add data/ 2>/dev/null || true

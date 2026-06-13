@@ -10,6 +10,7 @@ from datetime import datetime
 if 'TEMP' not in os.environ:
     os.environ['TEMP'] = os.path.join(os.getcwd(), '.temp')
 os.makedirs(os.environ['TEMP'], exist_ok=True)
+os.makedirs(os.path.join(os.environ['TEMP'], 'stock_reports'), exist_ok=True)
 
 # 确保能找到 stock_analyzer 包
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
