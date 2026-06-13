@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>复盘 — Stock Analyzer</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #333; }
@@ -153,20 +152,6 @@
                     }
                   }
                 },
-                zoom: {
-                  pan: {
-                    enabled: true,
-                    mode: 'x',
-                    modifierKey: null,
-                  },
-                  zoom: {
-                    wheel: {
-                      enabled: false,
-                    },
-                    pinch: { enabled: false },
-                    drag: { enabled: false },
-                  }
-                }
               },
               scales: {
                 x: {
