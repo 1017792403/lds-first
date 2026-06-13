@@ -15,15 +15,23 @@ REVIEW_LOG = os.path.join(TEMP, "review_log.json")
 
 
 def _load_history() -> list:
-    """加载历史复盘记录，优先 TEMP 目录，其次项目 data/ 目录"""
-    for path in [
-        REVIEW_DB,
-        os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "review_history.json"),
+    """加载历史复盘记录，优先项目 data/ 目录"""
+    paths = [
         os.path.join(os.getcwd(), "data", "review_history.json"),
-    ]:
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "review_history.json"),
+        REVIEW_DB,
+    ]
+    for path in paths:
         if os.path.exists(path):
             with open(path, "r", encoding="utf-8") as f:
-                return json.load(f)
+                records = json.load(f)
+            if len(records) >= 10:  # 取数据最全的那个
+                return records
+            # 否则继续找更大的
+    # 最后返回 TEMP 目录的（如果有）
+    if os.path.exists(REVIEW_DB):
+        with open(REVIEW_DB, "r", encoding="utf-8") as f:
+            return json.load(f)
     return []
 
 
