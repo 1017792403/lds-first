@@ -165,6 +165,14 @@ def run_v3():
     print("  STOCK ANALYZER — V3 MULTI-FACTOR (事件+技术+人性)")
     print("=" * 75)
 
+    print("\n[0/5] Updating event sectors from news...")
+    try:
+        from stock_analyzer.analysis.news_driver import update_event_sectors
+        update_event_sectors()
+        print("  Event sectors updated")
+    except Exception as e:
+        print(f"  News update skipped: {e}")
+
     print("\n[1/5] Loading industry classification...")
     stock_data = load_sw_classification()
     print(f"  Loaded {len(stock_data)} stocks")

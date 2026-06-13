@@ -220,6 +220,15 @@ def api_reset_config():
     return jsonify({"success": True, "config": config})
 
 
+# ============ 热点行业 API ============
+
+@app.route("/api/hot-sectors")
+def api_hot_sectors():
+    """获取当前热点行业"""
+    from stock_analyzer.analysis.news_driver import get_hot_sectors_summary
+    return jsonify({"hot_sectors": get_hot_sectors_summary()})
+
+
 # ============ 启动 ============
 
 
