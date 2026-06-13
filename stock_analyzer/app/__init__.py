@@ -89,6 +89,10 @@ def run_analysis():
                     val = val.item()
                 return val
 
+            # 生成评分明细和选股理由
+            from stock_analyzer.analysis.explainer import explain
+            exp = explain(p, mode)
+
             result["picks"].append({
                 "rank": i + 1,
                 "name": _get("name", _get("name_y", "?")),
@@ -98,6 +102,8 @@ def run_analysis():
                 "change_pct": float(_get("change_pct", _get("chg_pct", _get("chg", 0)))),
                 "score": round(float(_get("final_score", _get("final", 0))), 1),
                 "logic": _get("logic", ""),
+                "details": exp.get("details", {}),
+                "reasons": exp.get("reasons", []),
             })
 
         _latest_result = result
