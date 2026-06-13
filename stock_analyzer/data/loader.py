@@ -12,7 +12,7 @@ def _find_classification_file() -> str:
         return SW_XLS
     # 尝试项目目录下的 data/sw.json
     for p in [
-        os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "sw.json"),
+        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "sw.json"),
         os.path.join(os.getcwd(), "data", "sw.json"),
     ]:
         if os.path.exists(p):
