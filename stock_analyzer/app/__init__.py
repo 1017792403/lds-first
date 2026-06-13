@@ -58,7 +58,6 @@ def run_analysis():
 
     try:
         from stock_analyzer.main import MODES
-        from stock_analyzer.review import record_picks
         from stock_analyzer.report import generate_report
 
         t0 = time.time()
@@ -67,9 +66,6 @@ def run_analysis():
 
         # 恢复 print
         builtins.print = _old_print
-
-        # 记录复盘
-        record_picks(picks, mode)
 
         # 生成 HTML 报告
         report_name = f"report_{datetime.now():%Y%m%d_%H%M%S}.html"
