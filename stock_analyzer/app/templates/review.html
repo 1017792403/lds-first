@@ -136,11 +136,11 @@
             options: {
               responsive: true,
               maintainAspectRatio: true,
-              onClick: function(e, item) {
-                if (item && item.length > 0) {
-                  const idx = item[0].index;
+              onClick: function(e, activeElements) {
+                if (activeElements && activeElements.length > 0) {
+                  const idx = activeElements[0].index;
                   const date = labels[idx];
-                  const strategy = item[0].dataset.label.split(' ')[0].toLowerCase();
+                  const strategy = activeElements[0].dataset.label.split(' ')[0].toLowerCase();
                   showDayPicks(date, strategy);
                 }
               },
@@ -161,10 +161,9 @@
                   },
                   zoom: {
                     wheel: {
-                      enabled: true,
-                      mode: 'x',
+                      enabled: false,
                     },
-                    pinch: { enabled: true },
+                    pinch: { enabled: false },
                     drag: { enabled: false },
                   }
                 }
@@ -183,6 +182,24 @@
               }
             }
           });
+          // 直接点击画布上的数据点
+          document.getElementById('historyChart').onclick = function(e) {
+            if (!chart || !chart.chartArea) return;
+            const rect = this.getBoundingClientRect();
+            const ca = chart.chartArea;
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            if (x < ca.left || x > ca.right || y < ca.top || y > ca.bottom) return;
+            for (let ds = 0; ds <= 2; ds++) {
+              const meta = chart.getDatasetMeta(ds);
+              const strat = ['basic','v2','v3'][ds];
+              for (let i = 0; i < meta.data.length; i++) {
+                const pt = meta.data[i];
+                const dist = Math.hypot(x - pt.x, y - pt.y);
+                if (dist < 25) { showDayPicks(labels[i], strat); return; }
+              }
+            }
+          };
         } else {
           document.getElementById('historyChart').innerHTML =
             '<p style="text-align:center;color:#bbb;padding:20px;">暂无数据</p>';
