@@ -21,7 +21,7 @@ _old_print = builtins.print
 builtins.print = lambda *a, **k: None
 
 from stock_analyzer.data.loader import load_sw_classification
-from stock_analyzer.data.kline import fetch_kline
+from stock_analyzer.data.kline import fetch_kline_batch
 from stock_analyzer.analysis.scorer import (
     score_industries, get_dynamic_market_m,
     score_stocks, score_stocks_v2, select_top_n,
@@ -182,19 +182,7 @@ def main():
     # 取候选股票（各行业成交额前列的）
     tc_list = stock_data["tc"].unique().tolist()
     progress(f"Fetching {DAYS}-day kline for {len(tc_list)} stocks...")
-    
-    # 分批获取 K 线
-    kline_data = {}
-    batch_size = 100
-    for i in range(0, len(tc_list), batch_size):
-        batch = tc_list[i:i+batch_size]
-        for tc in batch:
-            klines = fetch_kline(tc, DAYS)
-            if klines:
-                kline_data[tc] = klines
-        progress(f"  {min(i+batch_size, len(tc_list))}/{len(tc_list)} ({len(kline_data)} with data)")
-        time.sleep(0.05)
-    
+    kline_data = fetch_kline_batch(tc_list, days=DAYS, max_workers=8, interval=0)
     progress(f"Got kline for {len(kline_data)} stocks")
     
     # 获取交易日列表
