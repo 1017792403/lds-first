@@ -13,22 +13,26 @@
     .nav a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; }
     .nav a:hover { background: rgba(255,255,255,0.15); color: white; }
     .nav a.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
-    .container { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px; }
     .stat-card { background: white; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
     .stat-num { font-size: 26px; font-weight: 700; color: #667eea; }
     .stat-label { font-size: 12px; color: #999; margin-top: 4px; }
-    .chart-box { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .scroll-wrap { overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; padding: 12px; }
+    .scroll-wrap canvas { min-width: 900px; }
+    .section-title { font-size: 16px; font-weight: 700; margin: 16px 0 8px; color: #555; }
     .table { width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
     .table th { background: #f8f9fc; padding: 10px; text-align: left; font-size: 12px; color: #888; }
     .table td { padding: 8px 10px; font-size: 13px; border-top: 1px solid #f0f0f0; }
-    .picks-box { background: white; border-radius: 8px; padding: 16px; margin-top: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: none; }
-    .picks-box h4 { margin-bottom: 8px; font-size: 14px; }
-    .picks-table { width: 100%; font-size: 12px; border-collapse: collapse; }
-    .picks-table th { background: #f8f9fc; padding: 6px 8px; text-align: left; }
-    .picks-table td { padding: 4px 8px; border-top: 1px solid #eee; }
-    .hit-y { color: #27ae60; font-weight: 600; }
-    .hit-n { color: #e74c3c; font-weight: 600; }
+    .table tr { cursor: pointer; }
+    .table tr:hover { background: #f5f7ff; }
+    .detail-box { background: white; border-radius: 8px; padding: 16px; margin-top: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: none; }
+    .detail-box h4 { margin-bottom: 8px; font-size: 14px; }
+    .detail-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+    .detail-table th { background: #f8f9fc; padding: 6px 8px; text-align: left; }
+    .detail-table td { padding: 4px 8px; border-top: 1px solid #eee; }
+    .green { color: #27ae60; font-weight: 600; }
+    .red { color: #e74c3c; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -42,97 +46,87 @@
   </nav>
   <div class="container">
     <div id="stats" class="stats-grid"></div>
-    <div class="chart-box"><canvas id="historyChart" width="800" height="300"></canvas></div>
-    <div id="pick-detail" class="picks-box"></div>
-    <table class="table" id="history-table">
+    <div class="section-title">三种策略每日胜率</div>
+    <div class="scroll-wrap"><canvas id="chart" width="1200" height="320"></canvas></div>
+    <div id="detail" class="detail-box"></div>
+    <div class="section-title">历史记录（点击查看详情）</div>
+    <table class="table">
       <thead><tr><th>日期</th><th>策略</th><th>推荐</th><th>命中</th><th>已复盘</th><th>胜率</th></tr></thead>
-      <tbody id="history-body"></tbody>
+      <tbody id="table-body"></tbody>
     </table>
   </div>
   <script>
-    fetch('/api/review').then(r => r.json()).then(data => {
-      const s = data.stats;
-      document.getElementById('stats').innerHTML =
+    var allData = null;
+    fetch('/api/review').then(function(r) { return r.json(); }).then(function(data) {
+      allData = data;
+      var s = data.stats;
+      var h = document.getElementById('stats');
+      h.innerHTML =
         '<div class="stat-card"><div class="stat-num">' + s.total_sessions + '</div><div class="stat-label">运行天数</div></div>' +
         '<div class="stat-card"><div class="stat-num">' + s.total_picks + '</div><div class="stat-label">总推荐</div></div>' +
         '<div class="stat-card"><div class="stat-num">' + (s.verified_picks||0) + '</div><div class="stat-label">已复盘</div></div>' +
         '<div class="stat-card"><div class="stat-num">' + s.hit_rate + '%</div><div class="stat-label">综合胜率</div></div>' +
         '<div class="stat-card"><div class="stat-num">' + (s.avg_actual_change>0?'+':'') + s.avg_actual_change + '%</div><div class="stat-label">平均涨幅</div></div>';
 
-      var dateMap = {};
+      var map = {};
       data.history.forEach(function(h) {
-        if (!dateMap[h.date]) dateMap[h.date] = {};
-        var picks = h.picks || [];
-        var hits = 0, verified = 0;
-        picks.forEach(function(p) {
-          if (p.hit === true) hits++;
-          if (p.hit !== null) verified++;
-        });
-        dateMap[h.date][h.strategy] = verified > 0 ? Math.round(hits/verified*100) : null;
+        if (!map[h.date]) map[h.date] = {};
+        var n = 0, m = 0;
+        (h.picks||[]).forEach(function(p) { if (p.hit === true) m++; if (p.hit !== null) n++; });
+        map[h.date][h.strategy] = n > 0 ? Math.round(m/n*100) : null;
       });
+      var dates = Object.keys(map).sort();
+      var lab = dates.map(function(d) { return d.slice(4,6) + '-' + d.slice(6,8); });
+      var getR = function(s) { return dates.map(function(d) { var v = map[d][s]; return v !== undefined ? v : null; }); };
 
-      var labels = Object.keys(dateMap).sort();
-      var shortLabels = labels.map(function(d) { return d.slice(4,6) + '-' + d.slice(6,8); });
-      var basicRates = labels.map(function(d) { var v = dateMap[d]['basic']; return v !== undefined ? v : null; });
-      var v2Rates = labels.map(function(d) { var v = dateMap[d]['v2']; return v !== undefined ? v : null; });
-      var v3Rates = labels.map(function(d) { var v = dateMap[d]['v3']; return v !== undefined ? v : null; });
-
-      new Chart(document.getElementById('historyChart'), {
+      new Chart(document.getElementById('chart'), {
         type: 'line',
         data: {
-          labels: shortLabels,
+          labels: lab,
           datasets: [
-            { label: 'Basic', data: basicRates, borderColor: '#667eea', pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true },
-            { label: 'V2', data: v2Rates, borderColor: '#e91e63', pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true },
-            { label: 'V3', data: v3Rates, borderColor: '#2196f3', pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true }
+            { label: 'Basic', data: getR('basic'), borderColor: '#667eea', pointRadius: 3, tension: 0.3, spanGaps: true },
+            { label: 'V2', data: getR('v2'), borderColor: '#e91e63', pointRadius: 3, tension: 0.3, spanGaps: true },
+            { label: 'V3', data: getR('v3'), borderColor: '#2196f3', pointRadius: 3, tension: 0.3, spanGaps: true }
           ]
         },
         options: {
-          responsive: true,
-          scales: {
-            x: { ticks: { maxTicksLimit: 10, maxRotation: 45 } },
-            y: { min: 0, max: 100, title: { display: true, text: '胜率 %' } }
-          },
-          plugins: { legend: { position: 'top' } }
+          responsive: true, maintainAspectRatio: false,
+          scales: { x: { ticks: { autoSkip: true, maxTicksLimit: 10 } }, y: { min: 0, max: 100 } }
         }
       });
 
-      var tbody = document.getElementById('history-body');
-      var rows = '';
-      data.history.slice().reverse().forEach(function(h) {
-        var picks = h.picks || [];
-        var hits = 0, verified = 0;
-        picks.forEach(function(p) { if (p.hit === true) hits++; if (p.hit !== null) verified++; });
-        var rate = verified > 0 ? Math.round(hits/verified*100) : 0;
-        rows += '<tr onclick="showPicks(\'' + h.date + '\',\'' + h.strategy + '\')" style="cursor:pointer">' +
-          '<td>' + h.date + '</td><td>' + h.strategy + '</td><td>' + picks.length + '</td>' +
-          '<td class="' + (hits>0?'hit-y':'') + '">' + hits + '</td><td>' + verified + '</td><td>' + rate + '%</td></tr>';
+      var tb = document.getElementById('table-body');
+      var rows = [];
+      data.history.forEach(function(h, idx) { rows.push({ idx: idx, date: h.date, strategy: h.strategy, picks: h.picks||[] }); });
+      rows.reverse();
+      rows.forEach(function(r) {
+        var n = 0, m = 0;
+        r.picks.forEach(function(p) { if (p.hit === true) m++; if (p.hit !== null) n++; });
+        var rate = n > 0 ? Math.round(m/n*100) : 0;
+        tb.innerHTML += '<tr data-idx="' + r.idx + '"><td>' + r.date + '</td><td>' + r.strategy + '</td><td>10</td><td class="' + (m>0?'green':'') + '">' + m + '</td><td>' + n + '</td><td>' + rate + '%</td></tr>';
       });
-      tbody.innerHTML = rows;
-    });
 
-    function showPicks(date, strategy) {
-      fetch('/api/review').then(function(r) { return r.json(); }).then(function(data) {
-        var records = data.history.filter(function(h) { return h.date === date && h.strategy === strategy; });
-        if (records.length === 0) return;
-        var picks = records[0].picks || [];
-        var hits = 0, verified = 0;
-        picks.forEach(function(p) { if (p.hit === true) hits++; if (p.hit !== null) verified++; });
-        var html = '<h4>' + date + ' ' + strategy + ' 命中 ' + hits + '/' + verified + ' = ' + (verified>0?Math.round(hits/verified*100):0) + '%</h4>';
-        html += '<table class="picks-table"><tr><th>代码</th><th>板块</th><th>预测涨幅</th><th>实际涨幅</th><th>结果</th></tr>';
-        picks.forEach(function(p) {
-          var icon = p.hit === true ? 'Y' : (p.hit === false ? 'N' : '-');
-          var cls = p.hit === true ? 'hit-y' : (p.hit === false ? 'hit-n' : '');
-          html += '<tr><td>' + (p.code||'') + '</td><td>' + (p.industry||p.name||'') + '</td>' +
-            '<td>' + (p.predicted_change!=null?(p.predicted_change>0?'+':'')+p.predicted_change.toFixed(1)+'%':'') + '</td>' +
-            '<td class="' + cls + '">' + (p.actual_change!=null?(p.actual_change>0?'+':'')+p.actual_change.toFixed(2)+'%':'') + '</td>' +
-            '<td>' + icon + '</td></tr>';
+      document.querySelectorAll('#table-body tr').forEach(function(tr) {
+        tr.addEventListener('click', function() {
+          var idx = parseInt(this.getAttribute('data-idx'));
+          var h = data.history[idx];
+          if (!h) return;
+          var picks = h.picks || [];
+          var html = '<h4>' + h.date + ' - ' + h.strategy + '</h4><table class="detail-table"><tr><th>代码</th><th>板块</th><th>预测涨幅</th><th>实际涨幅</th><th>结果</th></tr>';
+          picks.forEach(function(p) {
+            var hit = p.hit;
+            html += '<tr><td>' + (p.code||'') + '</td><td>' + (p.industry||p.name||'') + '</td>' +
+              '<td>' + (p.predicted_change != null ? (p.predicted_change>0?'+':'') + p.predicted_change.toFixed(1) + '%' : '-') + '</td>' +
+              '<td class="' + (hit===true?'green':hit===false?'red':'') + '">' + (p.actual_change != null ? (p.actual_change>0?'+':'') + p.actual_change.toFixed(2) + '%' : '-') + '</td>' +
+              '<td>' + (hit===true?'Y':hit===false?'N':'-') + '</td></tr>';
+          });
+          html += '</table>';
+          var d = document.getElementById('detail');
+          d.innerHTML = html;
+          d.style.display = 'block';
         });
-        html += '</table>';
-        document.getElementById('pick-detail').style.display = 'block';
-        document.getElementById('pick-detail').innerHTML = html;
       });
-    }
+    });
   </script>
 </body>
 </html>
