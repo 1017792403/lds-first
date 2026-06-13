@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>复盘 — Stock Analyzer</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #333; }
@@ -89,8 +90,7 @@
         });
 
         if (labels.length > 0) {
-          const ctx = document.getElementById('historyChart');
-          const chart = new Chart(ctx, {
+          const chart = new Chart(document.getElementById('historyChart'), {
             type: 'line',
             data: {
               labels: shortLabels,
@@ -102,8 +102,8 @@
                   backgroundColor: 'rgba(102,126,234,0.1)',
                   fill: false,
                   tension: 0.3,
-                  pointRadius: 4,
-                  pointHoverRadius: 6,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
                   borderWidth: 2,
                   spanGaps: true,
                 },
@@ -114,8 +114,8 @@
                   backgroundColor: 'rgba(233,30,99,0.1)',
                   fill: false,
                   tension: 0.3,
-                  pointRadius: 4,
-                  pointHoverRadius: 6,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
                   borderWidth: 2,
                   spanGaps: true,
                 },
@@ -126,8 +126,8 @@
                   backgroundColor: 'rgba(33,150,243,0.1)',
                   fill: false,
                   tension: 0.3,
-                  pointRadius: 4,
-                  pointHoverRadius: 6,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
                   borderWidth: 2,
                   spanGaps: true,
                 }
@@ -136,6 +136,14 @@
             options: {
               responsive: true,
               maintainAspectRatio: true,
+              onClick: function(e, item) {
+                if (item && item.length > 0) {
+                  const idx = item[0].index;
+                  const date = labels[idx];
+                  const strategy = item[0].dataset.label.split(' ')[0].toLowerCase();
+                  showDayPicks(date, strategy);
+                }
+              },
               plugins: {
                 legend: { position: 'top' },
                 tooltip: {
@@ -144,42 +152,38 @@
                       return '点击查看当日选股';
                     }
                   }
+                },
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: 'x',
+                    modifierKey: null,
+                  },
+                  zoom: {
+                    wheel: {
+                      enabled: true,
+                      mode: 'x',
+                    },
+                    pinch: { enabled: true },
+                    drag: { enabled: false },
+                  }
                 }
               },
               scales: {
                 x: {
                   ticks: {
-                    maxRotation: 60,
+                    maxRotation: 45,
                     autoSkip: true,
-                    maxTicksLimit: 20,
-                  }
+                    maxTicksLimit: 10,
+                  },
+                  min: labels[0],
+                  max: labels[labels.length - 1],
                 },
                 y: { min: 0, max: 100, title: { display: true, text: '胜率 %' } }
               }
             }
           });
-
-          // Click handler on canvas
-          ctx.onclick = function(e) {
-            const rect = ctx.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const chartArea = chart.chartArea;
-            if (!chartArea) return;
-            // Map x to data index
-            const dataX = (x - chartArea.left) / (chartArea.right - chartArea.left);
-            const idx = Math.round(dataX * (labels.length - 1));
-            if (idx >= 0 && idx < labels.length) {
-              // Find which dataset was clicked (nearest point)
-              const points = chart.getElementsAtEventForMode(e, 'nearest', { intersect: false }, false);
-              if (points.length > 0) {
-                const date = labels[points[0].index];
-                const strategy = points[0].dataset.label.split(' ')[0].toLowerCase();
-                showDayPicks(date, strategy);
-              } else {
-                showDayPicks(labels[idx], 'basic');
-              }
-            }
-          };
+        } else {
           document.getElementById('historyChart').innerHTML =
             '<p style="text-align:center;color:#bbb;padding:20px;">暂无数据</p>';
         }
