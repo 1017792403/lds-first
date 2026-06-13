@@ -13,237 +13,126 @@
     .nav a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; }
     .nav a:hover { background: rgba(255,255,255,0.15); color: white; }
     .nav a.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
-    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
-    .stat-card { background: white; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    .stat-num { font-size: 28px; font-weight: 700; color: #667eea; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .stat-card { background: white; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .stat-num { font-size: 26px; font-weight: 700; color: #667eea; }
     .stat-label { font-size: 12px; color: #999; margin-top: 4px; }
-    .stat-num.green { color: #27ae60; }
-    .section-title { font-size: 16px; font-weight: 700; margin: 16px 0 8px; color: #555; }
+    .chart-box { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
     .table { width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    .table th { background: #f8f9fc; padding: 10px 14px; text-align: left; font-size: 12px; color: #888; font-weight: 600; }
-    .table td { padding: 8px 14px; font-size: 13px; border-top: 1px solid #f0f0f0; }
+    .table th { background: #f8f9fc; padding: 10px; text-align: left; font-size: 12px; color: #888; }
+    .table td { padding: 8px 10px; font-size: 13px; border-top: 1px solid #f0f0f0; }
+    .picks-box { background: white; border-radius: 8px; padding: 16px; margin-top: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: none; }
+    .picks-box h4 { margin-bottom: 8px; font-size: 14px; }
+    .picks-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+    .picks-table th { background: #f8f9fc; padding: 6px 8px; text-align: left; }
+    .picks-table td { padding: 4px 8px; border-top: 1px solid #eee; }
     .hit-y { color: #27ae60; font-weight: 600; }
     .hit-n { color: #e74c3c; font-weight: 600; }
-    .empty { text-align: center; padding: 48px; color: #bbb; }
-    .chart-box { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
   </style>
 </head>
 <body>
   <nav class="nav">
-    <span class="nav-title">📊 Stock Analyzer</span>
+    <span class="nav-title">Stock Analyzer</span>
     <a href="/">仪表盘</a>
     <a href="/review" class="active">复盘</a>
     <a href="/backtest">回测</a>
     <a href="/cache">缓存</a>
+    <a href="/settings">设置</a>
   </nav>
-
   <div class="container">
-    <h2 style="margin-bottom: 16px;">📋 选股复盘</h2>
-    <div id="stats" class="stats-grid"><div class="stat-card">加载中...</div></div>
-    <div class="chart-box"><canvas id="historyChart"></canvas></div>
-    <div class="section-title">📅 历史记录</div>
+    <div id="stats" class="stats-grid"></div>
+    <div class="chart-box"><canvas id="historyChart" width="800" height="300"></canvas></div>
+    <div id="pick-detail" class="picks-box"></div>
     <table class="table" id="history-table">
       <thead><tr><th>日期</th><th>策略</th><th>推荐</th><th>命中</th><th>已复盘</th><th>胜率</th></tr></thead>
       <tbody id="history-body"></tbody>
     </table>
   </div>
-
   <script>
-    fetch('/api/review')
-      .then(r => r.json())
-      .then(data => {
-        const s = data.stats;
-        document.getElementById('stats').innerHTML = `
-          <div class="stat-card"><div class="stat-num">${s.total_sessions}</div><div class="stat-label">运行天数</div></div>
-          <div class="stat-card"><div class="stat-num">${s.total_picks}</div><div class="stat-label">总推荐</div></div>
-          <div class="stat-card"><div class="stat-num green">${s.verified_picks || 0}</div><div class="stat-label">已复盘</div></div>
-          <div class="stat-card"><div class="stat-num green">${s.hit_rate}%</div><div class="stat-label">综合胜率</div></div>
-          <div class="stat-card"><div class="stat-num ${s.avg_actual_change > 0 ? 'green' : ''}">${s.avg_actual_change > 0 ? '+' : ''}${s.avg_actual_change}%</div><div class="stat-label">平均涨幅</div></div>
-        `;
+    fetch('/api/review').then(r => r.json()).then(data => {
+      const s = data.stats;
+      document.getElementById('stats').innerHTML =
+        '<div class="stat-card"><div class="stat-num">' + s.total_sessions + '</div><div class="stat-label">运行天数</div></div>' +
+        '<div class="stat-card"><div class="stat-num">' + s.total_picks + '</div><div class="stat-label">总推荐</div></div>' +
+        '<div class="stat-card"><div class="stat-num">' + (s.verified_picks||0) + '</div><div class="stat-label">已复盘</div></div>' +
+        '<div class="stat-card"><div class="stat-num">' + s.hit_rate + '%</div><div class="stat-label">综合胜率</div></div>' +
+        '<div class="stat-card"><div class="stat-num">' + (s.avg_actual_change>0?'+':'') + s.avg_actual_change + '%</div><div class="stat-label">平均涨幅</div></div>';
 
-        // Chart — 三种策略每日胜率
-        const history = data.history || [];
-        // Group by date
-        const dateMap = {};
-        history.forEach(h => {
-          if (!dateMap[h.date]) dateMap[h.date] = {};
-          const picks = h.picks || [];
-          const hits = picks.filter(p => p.hit === true).length;
-          const verified = picks.filter(p => p.hit !== null).length;
-          dateMap[h.date][h.strategy] = verified > 0 ? Math.round(hits/verified*100) : null;
-          // Store the actual picks for click interaction
-          if (!dateMap[h.date]._picks) dateMap[h.date]._picks = {};
-          dateMap[h.date]._picks[h.strategy] = picks;
+      var dateMap = {};
+      data.history.forEach(function(h) {
+        if (!dateMap[h.date]) dateMap[h.date] = {};
+        var picks = h.picks || [];
+        var hits = 0, verified = 0;
+        picks.forEach(function(p) {
+          if (p.hit === true) hits++;
+          if (p.hit !== null) verified++;
         });
+        dateMap[h.date][h.strategy] = verified > 0 ? Math.round(hits/verified*100) : null;
+      });
 
-        const labels = Object.keys(dateMap).sort();
-        const basicRates = labels.map(d => dateMap[d]['basic'] ?? null);
-        const v2Rates = labels.map(d => dateMap[d]['v2'] ?? null);
-        const v3Rates = labels.map(d => dateMap[d]['v3'] ?? null);
+      var labels = Object.keys(dateMap).sort();
+      var shortLabels = labels.map(function(d) { return d.slice(4,6) + '-' + d.slice(6,8); });
+      var basicRates = labels.map(function(d) { var v = dateMap[d]['basic']; return v !== undefined ? v : null; });
+      var v2Rates = labels.map(function(d) { var v = dateMap[d]['v2']; return v !== undefined ? v : null; });
+      var v3Rates = labels.map(function(d) { var v = dateMap[d]['v3']; return v !== undefined ? v : null; });
 
-        // Format labels as MM-DD
-        const shortLabels = labels.map(d => {
-          if (d.length === 8) return d.slice(4, 6) + '-' + d.slice(6, 8);
-          return d;
-        });
-
-        if (labels.length > 0) {
-          const chart = new Chart(document.getElementById('historyChart'), {
-            type: 'line',
-            data: {
-              labels: shortLabels,
-              datasets: [
-                {
-                  label: 'Basic 胜率',
-                  data: basicRates,
-                  borderColor: '#667eea',
-                  backgroundColor: 'rgba(102,126,234,0.1)',
-                  fill: false,
-                  tension: 0.3,
-                  pointRadius: 5,
-                  pointHoverRadius: 8,
-                  borderWidth: 2,
-                  spanGaps: true,
-                },
-                {
-                  label: 'V2 胜率',
-                  data: v2Rates,
-                  borderColor: '#e91e63',
-                  backgroundColor: 'rgba(233,30,99,0.1)',
-                  fill: false,
-                  tension: 0.3,
-                  pointRadius: 5,
-                  pointHoverRadius: 8,
-                  borderWidth: 2,
-                  spanGaps: true,
-                },
-                {
-                  label: 'V3 胜率',
-                  data: v3Rates,
-                  borderColor: '#2196f3',
-                  backgroundColor: 'rgba(33,150,243,0.1)',
-                  fill: false,
-                  tension: 0.3,
-                  pointRadius: 5,
-                  pointHoverRadius: 8,
-                  borderWidth: 2,
-                  spanGaps: true,
-                }
-              ]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: true,
-              onClick: function(e, activeElements) {
-                if (activeElements && activeElements.length > 0) {
-                  const idx = activeElements[0].index;
-                  const date = labels[idx];
-                  const strategy = activeElements[0].dataset.label.split(' ')[0].toLowerCase();
-                  showDayPicks(date, strategy);
-                }
-              },
-              plugins: {
-                legend: { position: 'top' },
-                tooltip: {
-                  callbacks: {
-                    afterLabel: function(ctx) {
-                      return '点击查看当日选股';
-                    }
-                  }
-                },
-              },
-              scales: {
-                x: {
-                  ticks: {
-                    maxRotation: 45,
-                    autoSkip: true,
-                    maxTicksLimit: 10,
-                  },
-                  min: labels[0],
-                  max: labels[labels.length - 1],
-                },
-                y: { min: 0, max: 100, title: { display: true, text: '胜率 %' } }
-              }
-            }
-          });
-          // 直接点击画布上的数据点
-          document.getElementById('historyChart').onclick = function(e) {
-            if (!chart || !chart.chartArea) return;
-            const rect = this.getBoundingClientRect();
-            const ca = chart.chartArea;
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            if (x < ca.left || x > ca.right || y < ca.top || y > ca.bottom) return;
-            for (let ds = 0; ds <= 2; ds++) {
-              const meta = chart.getDatasetMeta(ds);
-              const strat = ['basic','v2','v3'][ds];
-              for (let i = 0; i < meta.data.length; i++) {
-                const pt = meta.data[i];
-                const dist = Math.hypot(x - pt.x, y - pt.y);
-                if (dist < 25) { showDayPicks(labels[i], strat); return; }
-              }
-            }
-          };
-        } else {
-          document.getElementById('historyChart').innerHTML =
-            '<p style="text-align:center;color:#bbb;padding:20px;">暂无数据</p>';
-        }
-
-        // Table
-        const tbody = document.getElementById('history-body');
-        if (history.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6" class="empty">暂无数据，运行选股后自动记录</td></tr>';
-        } else {
-          tbody.innerHTML = history.slice().reverse().map(h => {
-            const picks = h.picks || [];
-            const hits = picks.filter(p => p.hit === true).length;
-            const verified = picks.filter(p => p.hit !== null).length;
-            const rate = verified > 0 ? Math.round(hits/verified*100) : 0;
-            return `<tr>
-              <td>${h.date}</td>
-              <td>${h.strategy}</td>
-              <td>${picks.length}</td>
-              <td class="${hits > 0 ? 'hit-y' : ''}">${hits}</td>
-              <td>${verified}</td>
-              <td>${rate}%</td>
-            </tr>`;
-          }).join('');
+      new Chart(document.getElementById('historyChart'), {
+        type: 'line',
+        data: {
+          labels: shortLabels,
+          datasets: [
+            { label: 'Basic', data: basicRates, borderColor: '#667eea', pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true },
+            { label: 'V2', data: v2Rates, borderColor: '#e91e63', pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true },
+            { label: 'V3', data: v3Rates, borderColor: '#2196f3', pointRadius: 4, pointHoverRadius: 6, tension: 0.3, spanGaps: true }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { ticks: { maxTicksLimit: 10, maxRotation: 45 } },
+            y: { min: 0, max: 100, title: { display: true, text: '胜率 %' } }
+          },
+          plugins: { legend: { position: 'top' } }
         }
       });
 
-    function showDayPicks(date, strategy) {
-      const container = document.getElementById('day-picks');
-      const records = (data.history || []).filter(r => r.date === date && r.strategy === strategy);
-      if (records.length === 0) {
-        container.innerHTML = '<p style="color:#999;padding:12px;">无数据</p>';
-        return;
-      }
-      const picks = records[0].picks || [];
-      const hits = picks.filter(p => p.hit === true).length;
-      const verified = picks.filter(p => p.hit !== null).length;
-      let html = `<div style="background:#f8f9fc;border-radius:8px;padding:12px;margin-top:12px;">
-        <div style="font-weight:600;margin-bottom:8px;">${date} · ${strategy} · 命中 ${hits}/${verified} = ${verified > 0 ? Math.round(hits/verified*100) : 0}%</div>
-        <table style="width:100%;font-size:12px;border-collapse:collapse;">
-          <tr style="background:#eee;font-weight:600;"><td style="padding:4px 8px;">代码</td><td style="padding:4px 8px;">板块</td><td style="padding:4px 8px;">预测涨幅</td><td style="padding:4px 8px;">实际涨幅</td><td style="padding:4px 8px;">结果</td></tr>`;
-      picks.forEach(p => {
-        const hit = p.hit;
-        const actual = p.actual_change;
-        const predicted = p.predicted_change;
-        const icon = hit === true ? '✅' : hit === false ? '❌' : '⏳';
-        const color = hit === true ? 'green' : hit === false ? '#e74c3c' : '#999';
-        html += `<tr>
-          <td style="padding:3px 8px;">${p.code || '?'}</td>
-          <td style="padding:3px 8px;">${p.industry || p.name || '?'}</td>
-          <td style="padding:3px 8px;">${predicted != null ? (predicted > 0 ? '+' : '') + predicted.toFixed(1) + '%' : '-'}</td>
-          <td style="padding:3px 8px;color:${color};">${actual != null ? (actual > 0 ? '+' : '') + actual.toFixed(2) + '%' : '-'}</td>
-          <td style="padding:3px 8px;">${icon}</td>
-        </tr>`;
+      var tbody = document.getElementById('history-body');
+      var rows = '';
+      data.history.slice().reverse().forEach(function(h) {
+        var picks = h.picks || [];
+        var hits = 0, verified = 0;
+        picks.forEach(function(p) { if (p.hit === true) hits++; if (p.hit !== null) verified++; });
+        var rate = verified > 0 ? Math.round(hits/verified*100) : 0;
+        rows += '<tr onclick="showPicks(\'' + h.date + '\',\'' + h.strategy + '\')" style="cursor:pointer">' +
+          '<td>' + h.date + '</td><td>' + h.strategy + '</td><td>' + picks.length + '</td>' +
+          '<td class="' + (hits>0?'hit-y':'') + '">' + hits + '</td><td>' + verified + '</td><td>' + rate + '%</td></tr>';
       });
-      html += '</table></div>';
-      container.innerHTML = html;
+      tbody.innerHTML = rows;
+    });
+
+    function showPicks(date, strategy) {
+      fetch('/api/review').then(function(r) { return r.json(); }).then(function(data) {
+        var records = data.history.filter(function(h) { return h.date === date && h.strategy === strategy; });
+        if (records.length === 0) return;
+        var picks = records[0].picks || [];
+        var hits = 0, verified = 0;
+        picks.forEach(function(p) { if (p.hit === true) hits++; if (p.hit !== null) verified++; });
+        var html = '<h4>' + date + ' ' + strategy + ' 命中 ' + hits + '/' + verified + ' = ' + (verified>0?Math.round(hits/verified*100):0) + '%</h4>';
+        html += '<table class="picks-table"><tr><th>代码</th><th>板块</th><th>预测涨幅</th><th>实际涨幅</th><th>结果</th></tr>';
+        picks.forEach(function(p) {
+          var icon = p.hit === true ? 'Y' : (p.hit === false ? 'N' : '-');
+          var cls = p.hit === true ? 'hit-y' : (p.hit === false ? 'hit-n' : '');
+          html += '<tr><td>' + (p.code||'') + '</td><td>' + (p.industry||p.name||'') + '</td>' +
+            '<td>' + (p.predicted_change!=null?(p.predicted_change>0?'+':'')+p.predicted_change.toFixed(1)+'%':'') + '</td>' +
+            '<td class="' + cls + '">' + (p.actual_change!=null?(p.actual_change>0?'+':'')+p.actual_change.toFixed(2)+'%':'') + '</td>' +
+            '<td>' + icon + '</td></tr>';
+        });
+        html += '</table>';
+        document.getElementById('pick-detail').style.display = 'block';
+        document.getElementById('pick-detail').innerHTML = html;
+      });
     }
   </script>
-  <div id="day-picks"></div>
 </body>
 </html>
