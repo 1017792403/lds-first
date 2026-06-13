@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>缓存管理 — Stock Analyzer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #333; }
+    .nav { background: linear-gradient(135deg, #667eea, #764ba2); padding: 0 24px; display: flex; align-items: center; height: 56px; color: white; }
+    .nav-title { font-size: 18px; font-weight: 700; margin-right: 32px; }
+    .nav a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+    .nav a:hover { background: rgba(255,255,255,0.15); color: white; }
+    .nav a.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
+    .container { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
+    .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+    .stat { font-size: 36px; font-weight: 700; color: #667eea; margin: 12px 0; }
+    .label { color: #999; font-size: 13px; }
+    .btn { padding: 10px 24px; background: #fa709a; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; margin-top: 16px; }
+    .btn:hover { background: #e05a80; }
+    .info { font-size: 12px; color: #aaa; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-title">📊 Stock Analyzer</span>
+    <a href="/">仪表盘</a>
+    <a href="/review">复盘</a>
+    <a href="/backtest">回测</a>
+    <a href="/cache" class="active">缓存</a>
+  </nav>
+  <div class="container">
+    <div class="card">
+      <h2>💾 数据缓存</h2>
+      <p class="label">缓存可减少重复 API 请求，加速运行</p>
+      <div class="stat" id="cache-count">—</div>
+      <p class="label" id="cache-detail">加载中...</p>
+      <button class="btn" onclick="clearCache()">🗑️ 清空缓存</button>
+      <p class="info">行业分类缓存 7 天 · K 线缓存 1 天 · 行情快照 5 分钟</p>
+    </div>
+  </div>
+  <script>
+    fetch('/api/cache').then(r=>r.json()).then(d => {
+      document.getElementById('cache-count').textContent = d.total_keys;
+      document.getElementById('cache-detail').textContent = `${d.expired_keys} 条已过期 / ${d.total_keys} 条总计`;
+    });
+    function clearCache() {
+      if (!confirm('确定清空所有缓存？')) return;
+      fetch('/api/cache/clear', {method:'POST'}).then(() => location.reload());
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>选股逻辑设置 — Stock Analyzer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #333; }
+    .nav { background: linear-gradient(135deg, #667eea, #764ba2); padding: 0 24px; display: flex; align-items: center; height: 56px; color: white; }
+    .nav-title { font-size: 18px; font-weight: 700; margin-right: 32px; }
+    .nav a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+    .nav a:hover { background: rgba(255,255,255,0.15); color: white; }
+    .nav a.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
+    .card { background: white; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 20px; margin-bottom: 16px; }
+    .card h3 { font-size: 16px; margin-bottom: 12px; color: #444; display: flex; align-items: center; gap: 8px; }
+    .card .desc { font-size: 12px; color: #999; margin-bottom: 12px; }
+    .param-row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #f5f5f5; gap: 12px; }
+    .param-row:last-child { border-bottom: none; }
+    .param-label { flex: 0 0 140px; font-size: 13px; font-weight: 500; }
+    .param-desc { flex: 1; font-size: 11px; color: #999; }
+    .param-input { flex: 0 0 80px; }
+    .param-input input { width: 100%; padding: 6px 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; text-align: center; }
+    .param-input input:focus { outline: none; border-color: #667eea; }
+    .actions { display: flex; gap: 10px; margin: 16px 0; flex-wrap: wrap; }
+    .btn { padding: 10px 24px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .btn-save { background: #667eea; color: white; }
+    .btn-reset { background: #fa709a; color: white; }
+    .btn-refresh { background: #43e97b; color: #333; }
+    .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: white; font-weight: 500; z-index: 999; display: none; animation: slideIn 0.3s; }
+    .toast-success { background: #27ae60; }
+    .toast-error { background: #e74c3c; }
+    @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .status-bar { background: white; border-radius: 8px; padding: 8px 16px; margin-bottom: 12px; font-size: 12px; color: #888; display: none; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .tag-basic { background: #e8eaff; color: #667eea; }
+    .tag-v2 { background: #fce4ec; color: #e91e63; }
+    .tag-v3 { background: #e3f2fd; color: #2196f3; }
+    .rule-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; }
+    .rule-row input { width: 70px; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; text-align: center; }
+    .sector-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 12px; flex-wrap: wrap; }
+    .sector-row input { width: 60px; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-size: 12px; }
+    .sector-code { font-weight: 600; color: #666; width: 50px; }
+    .sector-name { width: 80px; }
+    .strategy-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .strategy-tab { padding: 6px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; border: none; font-weight: 500; transition: 0.2s; }
+    .strategy-tab.active { color: white; }
+    .tab-basic { background: #f0f0f0; } .tab-basic.active { background: #667eea; }
+    .tab-v2 { background: #f0f0f0; } .tab-v2.active { background: #e91e63; }
+    .tab-v3 { background: #f0f0f0; } .tab-v3.active { background: #2196f3; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-title">Stock Analyzer</span>
+    <a href="/">仪表盘</a>
+    <a href="/review">复盘</a>
+    <a href="/backtest">回测</a>
+    <a href="/cache">缓存</a>
+    <a href="/settings" class="active">设置</a>
+  </nav>
+
+  <div id="toast" class="toast"></div>
+  <div class="container">
+    <h2 style="margin-bottom: 8px;">选股逻辑设置</h2>
+    <p style="color: #999; font-size: 13px; margin-bottom: 16px;">修改评分权重和参数后点击保存，下次运行选股时生效。</p>
+
+    <div id="status" class="status-bar"></div>
+    <div class="actions">
+      <button class="btn btn-save" onclick="saveConfig()">保存修改</button>
+      <button class="btn btn-reset" onclick="resetConfig()">恢复默认</button>
+    </div>
+
+    <div id="config-content"></div>
+  </div>
+
+  <script>
+    let configData = null;
+
+    function loadConfig() {
+      document.getElementById('status').style.display = 'block';
+      document.getElementById('status').textContent = '加载配置中...';
+
+      fetch('/api/config')
+        .then(r => r.json())
+        .then(data => {
+          configData = data;
+          renderConfig(data);
+          document.getElementById('status').style.display = 'none';
+        })
+        .catch(err => {
+          document.getElementById('status').textContent = '加载失败: ' + err.message;
+        });
+    }
+
+    function renderConfig(data) {
+      const el = document.getElementById('config-content');
+      let html = '';
+
+      // === 行业评分权重 ===
+      html += '<div class="card">';
+      html += '<h3>行业评分权重 <span class="tag tag-basic">Basic + V2</span></h3>';
+      html += '<div class="desc">行业评分 = 各因子得分 × 权重之和。权重总和应为 1.0。</div>';
+      const iw = data.industry_weights || {};
+      for (const [key, val] of Object.entries(iw)) {
+        html += '<div class="param-row">';
+        html += '<span class="param-label">' + (val.label || key) + '</span>';
+        html += '<div class="param-input"><input type="number" step="0.01" min="0" max="1" value="' + val.value + '" data-section="industry_weights" data-key="' + key + '"></div>';
+        html += '<span class="param-desc">' + (val.desc || '') + '</span>';
+        html += '</div>';
+      }
+      html += '</div>';
+
+      // === 个股评分权重 ===
+      html += '<div class="card">';
+      html += '<h3>个股评分权重 <span class="tag tag-basic">Basic + V2</span></h3>';
+      html += '<div class="desc">个股评分 = 各因子得分 × 权重之和。权重总和应为 1.0。</div>';
+      const sw = data.stock_weights || {};
+      for (const [key, val] of Object.entries(sw)) {
+        html += '<div class="param-row">';
+        html += '<span class="param-label">' + (val.label || key) + '</span>';
+        html += '<div class="param-input"><input type="number" step="0.01" min="0" max="1" value="' + val.value + '" data-section="stock_weights" data-key="' + key + '"></div>';
+        html += '<span class="param-desc">' + (val.desc || '') + '</span>';
+        html += '</div>';
+      }
+      html += '</div>';
+
+      // === 选股参数 ===
+      html += '<div class="card">';
+      html += '<h3>选股参数 <span class="tag tag-basic">Basic + V2 + V3</span></h3>';
+      const sp = data.selection_params || {};
+      for (const [key, val] of Object.entries(sp)) {
+        html += '<div class="param-row">';
+        html += '<span class="param-label">' + (val.label || key) + '</span>';
+        html += '<div class="param-input"><input type="number" step="1" min="1" value="' + val.value + '" data-section="selection_params" data-key="' + key + '"></div>';
+        html += '<span class="param-desc">' + (val.desc || '') + '</span>';
+        html += '</div>';
+      }
+      html += '</div>';
+
+      // === 市场状态阈值 ===
+      html += '<div class="card">';
+      html += '<h3>市场状态阈值 <span class="tag tag-basic">Basic + V2</span></h3>';
+      html += '<div class="desc">根据上涨行业占比判断市场强弱，动态决定入选行业数 M。</div>';
+      const mt = data.market_thresholds || {};
+      for (const [state, val] of Object.entries(mt)) {
+        html += '<div class="param-row">';
+        html += '<span class="param-label"><strong>' + (val.label || state) + '</strong></span>';
+        html += '<span>上涨占比 ≥</span>';
+        html += '<div class="param-input" style="flex:0 0 70px;"><input type="number" step="0.05" min="0" max="1" value="' + val.positive_ratio_min + '" data-section="market_thresholds" data-key="' + state + '" data-sub="positive_ratio_min"></div>';
+        html += '<span>M =</span>';
+        html += '<div class="param-input" style="flex:0 0 60px;"><input type="number" step="1" min="1" max="50" value="' + val.industry_count + '" data-section="market_thresholds" data-key="' + state + '" data-sub="industry_count"></div>';
+        html += '<span class="param-desc">' + (val.desc || '') + '</span>';
+        html += '</div>';
+      }
+      html += '</div>';
+
+      // === V2 修正因子 ===
+      html += '<div class="card">';
+      html += '<h3>V2 修正因子 <span class="tag tag-v2">V2</span></h3>';
+      html += '<div class="desc">过热惩罚和缩量惩罚的阈值与惩罚系数。</div>';
+
+      const v2 = data.v2_correction || {};
+      if (v2.overheat_thresholds) {
+        html += '<div style="margin:8px 0 4px;font-size:13px;font-weight:500;">' + v2.overheat_thresholds.label + '</div>';
+        html += '<div style="font-size:11px;color:#999;margin-bottom:6px;">' + v2.overheat_thresholds.desc + '</div>';
+        (v2.overheat_thresholds.rules || []).forEach((rule, idx) => {
+          html += '<div class="rule-row">';
+          html += '<span style="width:100px;">' + (rule.label || '') + '</span>';
+          html += '<span>涨幅 &gt;</span>';
+          html += '<input type="number" step="1" value="' + rule.max_chg + '" data-section="v2_correction" data-key="overheat_thresholds" data-idx="' + idx + '" data-field="max_chg">';
+          html += '<span>% → 权重 ×</span>';
+          html += '<input type="number" step="0.05" min="0" max="1" value="' + rule.penalty + '" data-section="v2_correction" data-key="overheat_thresholds" data-idx="' + idx + '" data-field="penalty">';
+          html += '</div>';
+        });
+      }
+
+      if (v2.volume_penalty) {
+        html += '<div style="margin:12px 0 4px;font-size:13px;font-weight:500;">' + v2.volume_penalty.label + '</div>';
+        html += '<div style="font-size:11px;color:#999;margin-bottom:6px;">' + v2.volume_penalty.desc + '</div>';
+        (v2.volume_penalty.rules || []).forEach((rule, idx) => {
+          html += '<div class="rule-row">';
+          html += '<span style="width:100px;">' + (rule.label || '') + '</span>';
+          html += '<span>量比 &lt;</span>';
+          html += '<input type="number" step="0.1" value="' + rule.max_ratio + '" data-section="v2_correction" data-key="volume_penalty" data-idx="' + idx + '" data-field="max_ratio">';
+          html += '<span>→ 权重 ×</span>';
+          html += '<input type="number" step="0.05" min="0" max="1" value="' + rule.penalty + '" data-section="v2_correction" data-key="volume_penalty" data-idx="' + idx + '" data-field="penalty">';
+          html += '</div>';
+        });
+      }
+      html += '</div>';
+
+      // === V3 事件板块 ===
+      html += '<div class="card">';
+      html += '<h3>事件驱动板块 (V3) <span class="tag tag-v3">V3</span></h3>';
+      html += '<div class="desc">V3 策略中使用的事件板块评分，可调整事件强度、曝光度。</div>';
+      const v3 = data.v3_event_sectors || {};
+      if (v3.sectors) {
+        html += '<div style="font-size:12px;font-weight:600;color:#666;padding:4px 0;display:flex;gap:8px;">';
+        html += '<span style="width:50px;">代码</span><span style="width:80px;">板块</span><span style="width:70px;">事件分</span><span style="width:70px;">曝光度</span><span>驱动事件</span>';
+        html += '</div>';
+        v3.sectors.forEach((s, idx) => {
+          html += '<div class="sector-row">';
+          html += '<span class="sector-code">' + s.code + '</span>';
+          html += '<span class="sector-name">' + (s.name || '') + '</span>';
+          html += '<span>事件:</span><input type="number" step="5" min="0" max="100" value="' + s.event_score + '" data-section="v3_event_sectors" data-idx="' + idx + '" data-field="event_score">';
+          html += '<span>曝光:</span><input type="number" step="5" min="0" max="100" value="' + s.exposure + '" data-section="v3_event_sectors" data-idx="' + idx + '" data-field="exposure">';
+          html += '<span style="font-size:11px;color:#999;flex:1;">' + (s.driver || '') + '</span>';
+          html += '</div>';
+        });
+      }
+      html += '</div>';
+
+      el.innerHTML = html;
+    }
+
+    function collectConfig() {
+      const updates = {};
+      document.querySelectorAll('[data-section]').forEach(input => {
+        const section = input.dataset.section;
+        const key = input.dataset.key;
+        const sub = input.dataset.sub;
+        const idx = input.dataset.idx;
+        const field = input.dataset.field;
+        const val = input.value;
+
+        if (!updates[section]) updates[section] = {};
+        if (idx !== undefined) {
+          // Array item
+          if (!updates[section][key]) updates[section][key] = { rules: [] };
+          if (!updates[section][key].rules[idx]) updates[section][key].rules[idx] = {};
+          if (field === 'max_chg' || field === 'max_ratio') updates[section][key].rules[idx][field] = parseFloat(val);
+          else if (field === 'penalty') updates[section][key].rules[idx][field] = parseFloat(val);
+        } else if (sub) {
+          if (updates[section][key] === undefined) updates[section][key] = {};
+          updates[section][key][sub] = parseFloat(val);
+        } else {
+          updates[section][key] = { value: isNaN(parseFloat(val)) ? val : parseFloat(val) };
+        }
+      });
+
+      // Special handling for v3_event_sectors
+      const v3Sectors = [];
+      document.querySelectorAll('[data-section="v3_event_sectors"]').forEach(input => {
+        const idx = parseInt(input.dataset.idx);
+        const field = input.dataset.field;
+        if (!v3Sectors[idx]) v3Sectors[idx] = {};
+        v3Sectors[idx][field] = parseInt(input.value);
+      });
+      if (v3Sectors.length > 0) {
+        // Get existing sector codes/names from config
+        const existing = configData.v3_event_sectors.sectors || [];
+        updates.v3_event_sectors = { sectors: v3Sectors.map((s, i) => ({
+          ...(existing[i] || {}),
+          ...s
+        }))};
+      }
+
+      return updates;
+    }
+
+    function saveConfig() {
+      const updates = collectConfig();
+      document.getElementById('status').style.display = 'block';
+      document.getElementById('status').textContent = '保存中...';
+
+      fetch('/api/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          showToast('配置已保存，下次选股时生效', 'success');
+          document.getElementById('status').textContent = '已保存';
+          configData = data.config;
+        } else {
+          showToast('保存失败', 'error');
+        }
+      })
+      .catch(err => {
+        showToast('保存失败: ' + err.message, 'error');
+        document.getElementById('status').style.display = 'none';
+      });
+    }
+
+    function resetConfig() {
+      if (!confirm('确定恢复默认配置？')) return;
+      document.getElementById('status').style.display = 'block';
+      document.getElementById('status').textContent = '重置中...';
+
+      fetch('/api/config/reset', { method: 'POST' })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            showToast('已恢复默认配置', 'success');
+            configData = data.config;
+            renderConfig(data.config);
+            document.getElementById('status').textContent = '已重置';
+          }
+        })
+        .catch(err => {
+          showToast('重置失败: ' + err.message, 'error');
+          document.getElementById('status').style.display = 'none';
+        });
+    }
+
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast toast-' + type;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
+    }
+
+    loadConfig();
+  </script>
+</body>
+</html>

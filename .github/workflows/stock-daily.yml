@@ -1,0 +1,68 @@
+name: Stock Daily Run
+
+on:
+  schedule:
+    # 北京时间 08:00 = UTC 00:00
+    - cron: '0 0 * * *'
+    # 北京时间 17:00 = UTC 09:00
+    - cron: '0 9 * * *'
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  run-stock-analyzer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate stock classification data
+        run: python scripts/generate_classification.py
+
+      - name: Run all strategies
+        env:
+          TEMP: ${{ runner.temp }}
+          PYTHONIOENCODING: utf-8
+        run: python scripts/gh_run.py
+
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-results-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/result*.json
+            ${{ runner.temp }}/stock_reports/
+            ${{ runner.temp }}/review_history.json
+          retention-days: 30
+
+      - name: Save review history to repo
+        run: |
+          mkdir -p data
+          if [ -f "${{ runner.temp }}/review_history.json" ]; then
+            cp "${{ runner.temp }}/review_history.json" data/review_history.json
+          fi
+          if [ -f "${{ runner.temp }}/result.json" ]; then
+            cp "${{ runner.temp }}/result.json" data/latest_result.json
+          fi
+
+      - name: Commit results
+        run: |
+          git config --local user.email "stock-analyzer[bot]@users.noreply.github.com"
+          git config --local user.name "Stock Analyzer Bot"
+          git add data/ 2>/dev/null || true
+          git diff --quiet && git diff --staged --quiet || \
+            git commit -m "Daily stock results $(date +'%Y-%m-%d %H:%M')"
+          git push

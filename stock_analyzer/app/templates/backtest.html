@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>回测 — Stock Analyzer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #333; }
+    .nav { background: linear-gradient(135deg, #667eea, #764ba2); padding: 0 24px; display: flex; align-items: center; height: 56px; color: white; }
+    .nav-title { font-size: 18px; font-weight: 700; margin-right: 32px; }
+    .nav a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+    .nav a:hover { background: rgba(255,255,255,0.15); color: white; }
+    .nav a.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px 16px; }
+    .hero { text-align: center; padding: 32px; background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    .btn { padding: 12px 32px; background: #667eea; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .table { width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-top: 16px; }
+    .table th { background: #f8f9fc; padding: 10px 14px; text-align: left; font-size: 12px; color: #888; font-weight: 600; }
+    .table td { padding: 8px 14px; font-size: 13px; border-top: 1px solid #f0f0f0; }
+    .status-bar { background: white; border-radius: 8px; padding: 12px 20px; margin: 12px 0; font-size: 13px; display: none; }
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .chart-box { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-top: 16px; }
+    .empty { text-align: center; padding: 48px; color: #bbb; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-title">📊 Stock Analyzer</span>
+    <a href="/">仪表盘</a>
+    <a href="/review">复盘</a>
+    <a href="/backtest" class="active">回测</a>
+    <a href="/cache">缓存</a>
+  </nav>
+
+  <div class="container">
+    <div class="hero">
+      <h2>📉 策略回测对比</h2>
+      <p style="color:#888;margin:8px 0 20px;font-size:14px;">对比 basic 和 v2 策略在同一数据上的表现</p>
+      <button class="btn" onclick="runBacktest()">🚀 运行回测</button>
+    </div>
+
+    <div id="status" class="status-bar"></div>
+    <div id="result" class="hidden">
+      <div class="chart-box"><canvas id="backtestChart"></canvas></div>
+      <table class="table">
+        <thead><tr><th>策略</th><th>推荐数</th><th>平均得分</th><th>平均涨幅%</th><th>耗时(秒)</th></tr></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function runBacktest() {
+      const status = document.getElementById('status');
+      status.style.display = 'flex';
+      status.className = 'status-bar';
+      status.innerHTML = '<span class="spinner"></span> 运行回测中（需拉取行情数据）...';
+
+      fetch('/api/backtest', { method: 'POST' })
+        .then(r => r.json())
+        .then(data => {
+          if (!data.success) throw new Error(data.error);
+          status.style.display = 'none';
+
+          document.getElementById('result').classList.remove('hidden');
+          const rows = data.data;
+
+          // Table
+          document.getElementById('table-body').innerHTML = rows.map(r =>
+            `<tr><td><strong>${r.strategy}</strong></td><td>${r.top_n}</td><td>${r.avg_score}</td><td>${r.avg_change_pct > 0 ? '+' : ''}${r.avg_change_pct}</td><td>${r.elapsed}</td></tr>`
+          ).join('');
+
+          // Chart
+          new Chart(document.getElementById('backtestChart'), {
+            type: 'bar',
+            data: {
+              labels: rows.map(r => r.strategy),
+              datasets: [
+                { label: '平均得分', data: rows.map(r => r.avg_score), backgroundColor: 'rgba(102,126,234,0.6)' },
+                { label: '平均涨幅%', data: rows.map(r => r.avg_change_pct), backgroundColor: 'rgba(67,233,123,0.6)' }
+              ]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { position: 'top' } },
+              scales: { y: { beginAtZero: true } }
+            }
+          });
+        })
+        .catch(err => {
+          status.style.display = 'flex';
+          status.innerHTML = `❌ ${err.message}`;
+        });
+    }
+  </script>
+</body>
+</html>

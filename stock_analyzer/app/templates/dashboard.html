@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>📊 Stock Analyzer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #333; min-height: 100vh; }
+    .nav { background: linear-gradient(135deg, #667eea, #764ba2); padding: 0 24px; display: flex; align-items: center; height: 56px; color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .nav-title { font-size: 18px; font-weight: 700; margin-right: 32px; }
+    .nav a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; transition: 0.2s; }
+    .nav a:hover { background: rgba(255,255,255,0.15); color: white; }
+    .nav a.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+    .hero { text-align: center; padding: 32px 16px; background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 24px; }
+    .hero h1 { font-size: 28px; margin-bottom: 8px; }
+    .hero p { color: #888; font-size: 14px; }
+    .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 20px 0; }
+    .btn { padding: 10px 28px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; color: white; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-basic { background: #667eea; }
+    .btn-v2 { background: #f093fb; }
+    .btn-v3 { background: #4facfe; }
+    .btn-refresh { background: #43e97b; color: #333; }
+    .btn-clear { background: #fa709a; }
+    .btn-config { background: #a29bfe; }
+    .status-bar { background: white; border-radius: 8px; padding: 12px 20px; margin-bottom: 16px; font-size: 13px; color: #666; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: none; }
+    .status-bar.loading { display: flex; align-items: center; gap: 8px; }
+    .status-bar.done { display: flex; align-items: center; gap: 8px; border-left: 4px solid #43e97b; }
+    .status-bar.error { display: flex; align-items: center; gap: 8px; border-left: 4px solid #fa709a; }
+    .spinner { width: 16px; height: 16px; border: 2px solid #ddd; border-top-color: #667eea; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .cards { display: grid; gap: 8px; }
+    .card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; transition: 0.2s; }
+    .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .card-header { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #f8f9fc; border-bottom: 1px solid #eee; }
+    .rank { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: white; }
+    .rank-1 { background: #e74c3c; } .rank-2 { background: #e67e22; } .rank-3 { background: #f39c12; }
+    .rank-other { background: #95a5a6; }
+    .stock-name { font-weight: 600; font-size: 15px; }
+    .stock-code { color: #999; font-size: 12px; }
+    .chg { font-weight: 600; margin-left: auto; }
+    .chg-up { color: #e74c3c; } .chg-down { color: #27ae60; }
+    .card-body { padding: 10px 16px; font-size: 13px; }
+    .card-row { display: flex; gap: 16px; margin-bottom: 4px; }
+    .card-row span { flex: 1; }
+    .logic { margin-top: 6px; color: #999; font-size: 12px; border-top: 1px dashed #eee; padding-top: 6px; }
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .chart-box { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .chart-box h3 { font-size: 14px; margin-bottom: 8px; color: #555; }
+    .dashboard-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+    .stat { background: white; border-radius: 8px; padding: 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .stat-num { font-size: 26px; font-weight: 700; color: #667eea; }
+    .stat-label { font-size: 12px; color: #999; margin-top: 4px; }
+    .empty-state { text-align: center; padding: 48px; color: #bbb; }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    .report-btn { text-align: center; margin: 16px 0; }
+    .report-btn a { display: inline-block; padding: 10px 24px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; }
+    .report-btn a:hover { background: #5a6fd6; }
+    @media (max-width: 700px) { .charts { grid-template-columns: 1fr; } }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-title">📊 Stock Analyzer</span>
+    <a href="/" class="active">仪表盘</a>
+    <a href="/review">复盘</a>
+    <a href="/backtest">回测</a>
+    <a href="/cache">缓存</a>
+  </nav>
+
+  <div class="container">
+    <div class="hero">
+      <h1>📈 股票量化选股工具</h1>
+      <p>点击下方按钮运行选股，结果自动展示</p>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-basic" onclick="run('basic')">🚀 经典选股</button>
+      <button class="btn btn-v2" onclick="run('v2')">🔧 V2 修正版</button>
+      <button class="btn btn-v3" onclick="run('v3')">🧠 V3 多因子</button>
+      <button class="btn btn-config" onclick="window.open('/settings','_blank')">⚙️ 选股逻辑</button>
+    </div>
+
+    <div id="status" class="status-bar"></div>
+
+    <div id="dashboard" class="hidden">
+      <div id="stats" class="dashboard-stats"></div>
+      <div id="charts" class="charts hidden">
+        <div class="chart-box"><h3>🏆 综合得分</h3><canvas id="scoreChart"></canvas></div>
+        <div class="chart-box"><h3>🏭 行业分布</h3><canvas id="industryChart"></canvas></div>
+      </div>
+      <div id="report-link" class="report-btn hidden"></div>
+      <div id="result-cards" class="cards"></div>
+    </div>
+
+    <div id="empty" class="empty-state">
+      <div class="icon">📊</div>
+      <p>点击上方按钮开始选股</p>
+    </div>
+  </div>
+
+  <script>
+    let scoreChart = null, industryChart = null;
+
+    function run(mode) {
+      const status = document.getElementById('status');
+      status.className = 'status-bar loading';
+      status.innerHTML = '<div class="spinner"></div> 正在运行 ' + mode.toUpperCase() + ' 选股...';
+
+      document.getElementById('dashboard').classList.add('hidden');
+      document.getElementById('empty').classList.add('hidden');
+
+      fetch('/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: mode })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (!data.success) throw new Error(data.error);
+
+        status.className = 'status-bar done';
+        status.innerHTML = `✅ ${mode.toUpperCase()} 完成 · 耗时 ${data.elapsed}s · 选出 ${data.picks_count} 只`;
+
+        renderResults(data);
+      })
+      .catch(err => {
+        status.className = 'status-bar error';
+        status.innerHTML = `❌ 出错: ${err.message}`;
+      });
+    }
+
+    function renderResults(data) {
+      document.getElementById('dashboard').classList.remove('hidden');
+
+      // Stats
+      const statsHtml = `
+        <div class="stat"><div class="stat-num">${data.picks_count}</div><div class="stat-label">推荐股票</div></div>
+        <div class="stat"><div class="stat-num">${data.mode.toUpperCase()}</div><div class="stat-label">策略模式</div></div>
+        <div class="stat"><div class="stat-num">${data.elapsed}s</div><div class="stat-label">耗时</div></div>
+        <div class="stat"><div class="stat-num">${new Date().toLocaleTimeString()}</div><div class="stat-label">更新时间</div></div>
+      `;
+      document.getElementById('stats').innerHTML = statsHtml;
+
+      // Charts
+      document.getElementById('charts').classList.remove('hidden');
+      renderCharts(data.picks);
+
+      // Report link
+      const rl = document.getElementById('report-link');
+      rl.classList.remove('hidden');
+      rl.innerHTML = '<a href="/report" target="_blank">📊 查看完整 HTML 报告</a>';
+
+      // Cards
+      const cards = document.getElementById('result-cards');
+      cards.innerHTML = data.picks.map((p, i) => {
+        const rankClass = i < 3 ? ['rank-1','rank-2','rank-3'][i] : 'rank-other';
+        const chgClass = p.change_pct > 0 ? 'chg-up' : 'chg-down';
+        const chgSign = p.change_pct > 0 ? '+' : '';
+        return `
+          <div class="card">
+            <div class="card-header">
+              <span class="rank ${rankClass}">${p.rank}</span>
+              <span class="stock-name">${p.name}</span>
+              <span class="stock-code">${p.code}</span>
+              <span class="chg ${chgClass}">${chgSign}${p.change_pct.toFixed(2)}%</span>
+            </div>
+            <div class="card-body">
+              <div class="card-row">
+                <span>🏭 ${p.industry}</span>
+                <span>⭐ 得分: ${p.score}</span>
+                <span>💰 ${p.price.toFixed(2)}</span>
+              </div>
+              <div class="logic">${p.logic || '—'}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCharts(picks) {
+      // Score chart
+      if (scoreChart) scoreChart.destroy();
+      scoreChart = new Chart(document.getElementById('scoreChart'), {
+        type: 'bar',
+        data: {
+          labels: picks.map(p => p.name),
+          datasets: [{
+            label: '综合得分',
+            data: picks.map(p => p.score),
+            backgroundColor: picks.map((_, i) =>
+              ['rgba(231,76,60,0.7)','rgba(230,126,34,0.7)','rgba(243,156,18,0.7)',
+               'rgba(102,126,234,0.6)','rgba(79,172,254,0.6)','rgba(102,126,234,0.5)',
+               'rgba(79,172,254,0.5)','rgba(102,126,234,0.4)','rgba(79,172,254,0.4)',
+               'rgba(102,126,234,0.3)'][i] || 'rgba(102,126,234,0.3)'
+            ),
+            borderColor: picks.map((_, i) =>
+              ['#e74c3c','#e67e22','#f39c12','#667eea'][i] || '#667eea'),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, max: 100 } }
+        }
+      });
+
+      // Industry chart
+      const indMap = {};
+      picks.forEach(p => { indMap[p.industry] = (indMap[p.industry] || 0) + 1; });
+      if (industryChart) industryChart.destroy();
+      industryChart = new Chart(document.getElementById('industryChart'), {
+        type: 'bar',
+        data: {
+          labels: Object.keys(indMap),
+          datasets: [{
+            label: '入选数量',
+            data: Object.values(indMap),
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

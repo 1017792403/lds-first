@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>复盘 — Stock Analyzer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #333; }
+    .nav { background: linear-gradient(135deg, #667eea, #764ba2); padding: 0 24px; display: flex; align-items: center; height: 56px; color: white; }
+    .nav-title { font-size: 18px; font-weight: 700; margin-right: 32px; }
+    .nav a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 14px; }
+    .nav a:hover { background: rgba(255,255,255,0.15); color: white; }
+    .nav a.active { background: rgba(255,255,255,0.2); color: white; font-weight: 600; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: white; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .stat-num { font-size: 28px; font-weight: 700; color: #667eea; }
+    .stat-label { font-size: 12px; color: #999; margin-top: 4px; }
+    .stat-num.green { color: #27ae60; }
+    .section-title { font-size: 16px; font-weight: 700; margin: 16px 0 8px; color: #555; }
+    .table { width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .table th { background: #f8f9fc; padding: 10px 14px; text-align: left; font-size: 12px; color: #888; font-weight: 600; }
+    .table td { padding: 8px 14px; font-size: 13px; border-top: 1px solid #f0f0f0; }
+    .hit-y { color: #27ae60; font-weight: 600; }
+    .hit-n { color: #e74c3c; font-weight: 600; }
+    .empty { text-align: center; padding: 48px; color: #bbb; }
+    .chart-box { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-title">📊 Stock Analyzer</span>
+    <a href="/">仪表盘</a>
+    <a href="/review" class="active">复盘</a>
+    <a href="/backtest">回测</a>
+    <a href="/cache">缓存</a>
+  </nav>
+
+  <div class="container">
+    <h2 style="margin-bottom: 16px;">📋 选股复盘</h2>
+    <div id="stats" class="stats-grid"><div class="stat-card">加载中...</div></div>
+    <div class="chart-box"><canvas id="historyChart"></canvas></div>
+    <div class="section-title">📅 历史记录</div>
+    <table class="table" id="history-table">
+      <thead><tr><th>日期</th><th>策略</th><th>推荐</th><th>命中</th><th>已复盘</th><th>胜率</th></tr></thead>
+      <tbody id="history-body"></tbody>
+    </table>
+  </div>
+
+  <script>
+    fetch('/api/review')
+      .then(r => r.json())
+      .then(data => {
+        const s = data.stats;
+        document.getElementById('stats').innerHTML = `
+          <div class="stat-card"><div class="stat-num">${s.total_sessions}</div><div class="stat-label">运行天数</div></div>
+          <div class="stat-card"><div class="stat-num">${s.total_picks}</div><div class="stat-label">总推荐</div></div>
+          <div class="stat-card"><div class="stat-num green">${s.verified_picks || 0}</div><div class="stat-label">已复盘</div></div>
+          <div class="stat-card"><div class="stat-num green">${s.hit_rate}%</div><div class="stat-label">综合胜率</div></div>
+          <div class="stat-card"><div class="stat-num ${s.avg_actual_change > 0 ? 'green' : ''}">${s.avg_actual_change > 0 ? '+' : ''}${s.avg_actual_change}%</div><div class="stat-label">平均涨幅</div></div>
+        `;
+
+        // Chart — 显示每日推荐数量柱状图
+        const history = data.history || [];
+        const labels = history.map(h => h.date).reverse();
+        const counts = history.map(h => (h.picks || []).length).reverse();
+
+        if (labels.length > 0) {
+          new Chart(document.getElementById('historyChart'), {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: '推荐数量',
+                data: counts,
+                backgroundColor: 'rgba(102,126,234,0.6)',
+                borderColor: 'rgba(102,126,234,1)',
+                borderWidth: 1,
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
+              }
+            }
+          });
+        } else {
+          document.getElementById('historyChart').innerHTML =
+            '<p style="text-align:center;color:#bbb;padding:20px;">暂无数据，运行选股后自动记录</p>';
+        }
+
+        // Table
+        const tbody = document.getElementById('history-body');
+        if (history.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="empty">暂无数据，运行选股后自动记录</td></tr>';
+        } else {
+          tbody.innerHTML = history.slice().reverse().map(h => {
+            const picks = h.picks || [];
+            const hits = picks.filter(p => p.hit === true).length;
+            const verified = picks.filter(p => p.hit !== null).length;
+            const rate = verified > 0 ? Math.round(hits/verified*100) : 0;
+            return `<tr>
+              <td>${h.date}</td>
+              <td>${h.strategy}</td>
+              <td>${picks.length}</td>
+              <td class="${hits > 0 ? 'hit-y' : ''}">${hits}</td>
+              <td>${verified}</td>
+              <td>${rate}%</td>
+            </tr>`;
+          }).join('');
+        }
+      });
+  </script>
+</body>
+</html>
