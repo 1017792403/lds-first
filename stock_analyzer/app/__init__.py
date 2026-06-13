@@ -130,7 +130,7 @@ def api_review():
     from stock_analyzer.review import get_stats, _load_history
     stats = get_stats()
     history = _load_history()
-    return jsonify({"stats": stats, "history": history[-30:]})  # 近30天
+    return jsonify({"stats": stats, "history": history})  # 近30天
 
 
 @app.route("/backtest")
