@@ -62,7 +62,7 @@ def run_basic():
     print("=" * 60)
 
     print("\n[1/4] Loading industry classification...")
-    stock_data = load_sw_classification(SW_XLS)
+    stock_data = load_sw_classification()
     print(f"  Loaded {len(stock_data)} stocks, "
           f"{stock_data['l2_code'].nunique()} industries")
 
@@ -117,7 +117,7 @@ def run_v2():
     print("=" * 60)
 
     print("\n[1/4] Loading industry classification...")
-    stock_data = load_sw_classification(SW_XLS)
+    stock_data = load_sw_classification()
     print(f"  Loaded {len(stock_data)} stocks")
 
     print("\n[2/4] Fetching real-time quotes...")
@@ -166,7 +166,7 @@ def run_v3():
     print("=" * 75)
 
     print("\n[1/5] Loading industry classification...")
-    stock_data = load_sw_classification(SW_XLS)
+    stock_data = load_sw_classification()
     print(f"  Loaded {len(stock_data)} stocks")
 
     print("\n[2/5] Fetching quotes...")
