@@ -53,6 +53,11 @@ jobs:
             /home/runner/work/_temp/stock_reports/
           retention-days: 30
 
+      - name: Verify previous day picks with market data
+        env:
+          PYTHONIOENCODING: utf-8
+        run: python scripts/verify_review.py
+
       - name: Save and push results to repo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

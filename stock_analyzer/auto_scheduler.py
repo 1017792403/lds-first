@@ -25,7 +25,7 @@ def _get_today_key(hour: int) -> str:
 def run_all_strategies():
     """运行三种策略并记录结果"""
     from stock_analyzer.main import MODES
-    from stock_analyzer.review import record_picks
+    from stock_analyzer.review import record_picks, fetch_and_update_actuals
 
     # 抑制 print 输出
     _old_print = _builtins.print
@@ -42,6 +42,12 @@ def run_all_strategies():
                 results[mode] = f"error: {e}"
     finally:
         _builtins.print = _old_print
+
+    # 验证前一日选股的实际涨跌幅
+    try:
+        fetch_and_update_actuals()
+    except Exception:
+        pass
 
     return results
 
