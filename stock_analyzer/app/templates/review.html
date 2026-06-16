@@ -31,6 +31,9 @@
     .detail-table { width: 100%; font-size: 12px; border-collapse: collapse; }
     .detail-table th { background: #f8f9fc; padding: 6px 8px; text-align: left; }
     .detail-table td { padding: 4px 8px; border-top: 1px solid #eee; }
+    .active-row { background: #eef1ff !important; }
+    .detail-row td { padding: 0 !important; }
+    .table .detail-row:hover { background: inherit !important; }
     .green { color: #27ae60; font-weight: 600; }
     .red { color: #e74c3c; font-weight: 600; }
   </style>
@@ -48,8 +51,8 @@
     <div id="stats" class="stats-grid"></div>
     <div class="section-title">三种策略每日胜率</div>
     <div class="scroll-wrap"><canvas id="chart" width="1200" height="320"></canvas></div>
-    <div id="detail" class="detail-box"></div>
-    <div class="section-title">历史记录（点击查看详情）</div>
+    <!-- 历史明细（由点击行动态在此插入） -->
+    <div class="section-title">历史记录</div>
     <table class="table">
       <thead><tr><th>日期</th><th>策略</th><th>推荐</th><th>命中</th><th>已复盘</th><th>胜率</th></tr></thead>
       <tbody id="table-body"></tbody>
@@ -123,24 +126,45 @@
         tb.innerHTML += '<tr data-idx="' + r.idx + '"><td>' + r.date + '</td><td>' + r.strategy + '</td><td>10</td><td class="' + (m>0?'green':'') + '">' + m + '</td><td>' + n + '</td><td>' + rate + '%</td></tr>';
       });
 
+      // 历史记录表格 — 点击行在下方展开当日选股明细（可折叠）
       document.querySelectorAll('#table-body tr').forEach(function(tr) {
         tr.addEventListener('click', function() {
           var idx = parseInt(this.getAttribute('data-idx'));
           var h = data.history[idx];
           if (!h) return;
+
+          // 如果该行下方已经有展开行，收起它
+          var next = this.nextElementSibling;
+          if (next && next.classList.contains('detail-row')) {
+            next.remove();
+            this.classList.remove('active-row');
+            return;
+          }
+
+          // 移除其他所有展开行
+          document.querySelectorAll('.detail-row').forEach(function(r) { r.remove(); });
+          document.querySelectorAll('.active-row').forEach(function(r) { r.classList.remove('active-row'); });
+
           var picks = h.picks || [];
-          var html = '<h4>' + h.date + ' - ' + h.strategy + '</h4><table class="detail-table"><tr><th>代码</th><th>板块</th><th>预测涨幅</th><th>实际涨幅</th><th>结果</th></tr>';
+          var html = '<td colspan="6" style="padding:12px 16px;background:#fafbff;">' +
+            '<div style="font-size:12px;font-weight:600;color:#555;margin-bottom:6px;">📋 ' + h.date + ' — ' + h.strategy + ' 选股明细</div>' +
+            '<table class="detail-table"><tr><th>代码</th><th>名称</th><th>板块</th><th>预测涨幅</th><th>实际涨幅</th><th>结果</th></tr>';
           picks.forEach(function(p) {
             var hit = p.hit;
-            html += '<tr><td>' + (p.code||'') + '</td><td>' + (p.industry||p.name||'') + '</td>' +
-              '<td>' + (p.predicted_change != null ? (p.predicted_change>0?'+':'') + p.predicted_change.toFixed(1) + '%' : '-') + '</td>' +
-              '<td class="' + (hit===true?'green':hit===false?'red':'') + '">' + (p.actual_change != null ? (p.actual_change>0?'+':'') + p.actual_change.toFixed(2) + '%' : '-') + '</td>' +
-              '<td>' + (hit===true?'Y':hit===false?'N':'-') + '</td></tr>';
+            var pc = p.predicted_change != null ? (p.predicted_change>0?'+':'') + p.predicted_change.toFixed(1) + '%' : '-';
+            var ac = p.actual_change != null ? (p.actual_change>0?'+':'') + p.actual_change.toFixed(2) + '%' : '-';
+            html += '<tr><td>' + (p.code||'') + '</td><td>' + (p.name||'') + '</td><td>' + (p.industry||'') + '</td>' +
+              '<td>' + pc + '</td>' +
+              '<td class="' + (hit===true?'green':hit===false?'red':'') + '">' + ac + '</td>' +
+              '<td>' + (hit===true?'✅':hit===false?'❌':'⏳') + '</td></tr>';
           });
-          html += '</table>';
-          var d = document.getElementById('detail');
-          d.innerHTML = html;
-          d.style.display = 'block';
+          html += '</table></td>';
+
+          var detailRow = document.createElement('tr');
+          detailRow.className = 'detail-row';
+          detailRow.innerHTML = html;
+          this.parentNode.insertBefore(detailRow, this.nextSibling);
+          this.classList.add('active-row');
         });
       });
     });
