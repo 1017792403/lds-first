@@ -13,6 +13,9 @@ from ..config import TEMP
 REVIEW_DB = os.path.join(TEMP, "review_history.json")
 REVIEW_LOG = os.path.join(TEMP, "review_log.json")
 
+# 项目 data/ 目录（用于持久化保存）
+_PROJECT_DATA = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "review_history.json")
+
 
 def _load_history() -> list:
     """加载历史复盘记录，优先项目 data/ 目录"""
@@ -36,7 +39,20 @@ def _load_history() -> list:
 
 
 def _save_history(records: list):
-    """保存历史复盘记录"""
+    """保存历史复盘记录，优先写入项目 data/ 目录"""
+    # 先尝试写入 data/ 目录（与 _load_history 读取的路径一致）
+    for path in [
+        os.path.join(os.getcwd(), "data", "review_history.json"),
+        _PROJECT_DATA,
+    ]:
+        try:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(records, f, ensure_ascii=False, indent=2)
+            return
+        except (OSError, IOError):
+            continue
+    # fallback 到 TEMP
     with open(REVIEW_DB, "w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
 
@@ -45,7 +61,7 @@ def record_picks(picks: list, strategy: str = "basic",
                  date: str = None) -> dict:
     """记录当日选股结果"""
     if date is None:
-        date = datetime.now().strftime("%Y-%m-%d")
+        date = datetime.now().strftime("%Y%m%d")  # 无横线，与 data/ 已有数据格式一致
 
     record = {
         "date": date,

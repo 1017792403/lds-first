@@ -8818,5 +8818,201 @@
       }
     ],
     "created_at": "2026-06-13T10:17:43.402726"
+  },
+  {
+    "date": "20260613",
+    "strategy": "v2",
+    "picks_count": 10,
+    "picks": [
+      {
+        "code": "601899",
+        "name": "紫金矿业",
+        "industry": "工业金属",
+        "predicted_score": 0.0,
+        "predicted_change": 6.44,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300750",
+        "name": "宁德时代",
+        "industry": "电池",
+        "predicted_score": 0.0,
+        "predicted_change": 3.31,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300033",
+        "name": "同花顺",
+        "industry": "软件开发",
+        "predicted_score": 0.0,
+        "predicted_change": 7.47,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "002297",
+        "name": "博云新材",
+        "industry": "航空装备Ⅱ",
+        "predicted_score": 0.0,
+        "predicted_change": 4.91,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "603259",
+        "name": "药明康德",
+        "industry": "医疗服务",
+        "predicted_score": 0.0,
+        "predicted_change": 2.72,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "600760",
+        "name": "中航沈飞",
+        "industry": "航空装备Ⅱ",
+        "predicted_score": 0.0,
+        "predicted_change": 7.18,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "002407",
+        "name": "多氟多",
+        "industry": "化学制品",
+        "predicted_score": 0.0,
+        "predicted_change": 3.88,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "002625",
+        "name": "光启技术",
+        "industry": "航空装备Ⅱ",
+        "predicted_score": 0.0,
+        "predicted_change": 6.15,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "600362",
+        "name": "江西铜业",
+        "industry": "工业金属",
+        "predicted_score": 0.0,
+        "predicted_change": 7.25,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300085",
+        "name": "银之杰",
+        "industry": "软件开发",
+        "predicted_score": 0.0,
+        "predicted_change": 7.89,
+        "actual_change": null,
+        "hit": null
+      }
+    ],
+    "created_at": "2026-06-13T16:15:47.738662"
+  },
+  {
+    "date": "20260613",
+    "strategy": "basic",
+    "picks_count": 10,
+    "picks": [
+      {
+        "code": "688507",
+        "name": "索辰科技",
+        "industry": "软件开发",
+        "predicted_score": 0.0,
+        "predicted_change": 19.95,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300377",
+        "name": "赢时胜",
+        "industry": "软件开发",
+        "predicted_score": 0.0,
+        "predicted_change": 20.0,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300244",
+        "name": "迪安诊断",
+        "industry": "医疗服务",
+        "predicted_score": 0.0,
+        "predicted_change": 18.01,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "601899",
+        "name": "紫金矿业",
+        "industry": "工业金属",
+        "predicted_score": 0.0,
+        "predicted_change": 6.44,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "603993",
+        "name": "洛阳钼业",
+        "industry": "工业金属",
+        "predicted_score": 0.0,
+        "predicted_change": 10.02,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "600869",
+        "name": "远东股份",
+        "industry": "电网设备",
+        "predicted_score": 0.0,
+        "predicted_change": 9.93,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "301217",
+        "name": "铜冠铜箔",
+        "industry": "电池",
+        "predicted_score": 0.0,
+        "predicted_change": 10.8,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300750",
+        "name": "宁德时代",
+        "industry": "电池",
+        "predicted_score": 0.0,
+        "predicted_change": 3.31,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688388",
+        "name": "嘉元科技",
+        "industry": "电池",
+        "predicted_score": 0.0,
+        "predicted_change": 10.97,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "000630",
+        "name": "铜陵有色",
+        "industry": "工业金属",
+        "predicted_score": 0.0,
+        "predicted_change": 10.08,
+        "actual_change": null,
+        "hit": null
+      }
+    ],
+    "created_at": "2026-06-13T17:16:36.452266"
   }
 ]
