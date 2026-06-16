@@ -139,6 +139,13 @@ def api_review():
     return jsonify({"stats": stats, "history": history})  # 近30天
 
 
+@app.route("/api/review/stocks")
+def api_review_stocks():
+    """个股历史统计 API — 按股票代码聚合"""
+    from stock_analyzer.review import get_stock_stats
+    return jsonify({"stocks": get_stock_stats()})
+
+
 @app.route("/backtest")
 def backtest_page():
     """回测页面"""

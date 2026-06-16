@@ -54,6 +54,23 @@
       <thead><tr><th>日期</th><th>策略</th><th>推荐</th><th>命中</th><th>已复盘</th><th>胜率</th></tr></thead>
       <tbody id="table-body"></tbody>
     </table>
+
+    <!-- ====== 个股历史统计 ====== -->
+    <div class="section-title">📋 个股历史统计</div>
+    <div style="margin-bottom:10px;">
+      <input id="stock-search" type="text" placeholder="🔍 搜索股票名称或代码…"
+             style="width:100%;max-width:350px;padding:8px 12px;border:1px solid #ddd;border-radius:6px;font-size:14px;outline:none;"
+             oninput="filterStockTable()">
+    </div>
+    <div style="overflow-x:auto;background:white;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+      <table class="table" style="border:0;">
+        <thead><tr><th>股票</th><th>代码</th><th>板块</th><th>选中次数</th><th>胜率</th><th>平均涨幅</th><th>平均评分</th><th>涉及策略</th></tr></thead>
+        <tbody id="stock-table-body"></tbody>
+      </table>
+    </div>
+    <!-- 个股明细弹窗 -->
+    <div id="stock-detail" class="detail-box"></div>
+    <div id="stock-empty" style="text-align:center;padding:32px;color:#bbb;display:none;">无匹配结果</div>
   </div>
   <script>
     var allData = null;
@@ -127,6 +144,89 @@
         });
       });
     });
+
+    // ============ 个股历史统计 ============
+    var allStocks = null;
+
+    function loadStockStats() {
+      fetch('/api/review/stocks').then(function(r) { return r.json(); }).then(function(data) {
+        allStocks = data.stocks || [];
+        renderStockTable(allStocks);
+      });
+    }
+
+    function renderStockTable(stocks) {
+      var tb = document.getElementById('stock-table-body');
+      var empty = document.getElementById('stock-empty');
+      if (stocks.length === 0) {
+        tb.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      tb.innerHTML = stocks.map(function(s, idx) {
+        var wr = s.win_rate !== null ? s.win_rate + '%' : '-';
+        var aac = s.avg_actual_change !== null ? (s.avg_actual_change > 0 ? '+' : '') + s.avg_actual_change + '%' : '-';
+        var aacClass = s.avg_actual_change !== null ? (s.avg_actual_change > 0 ? 'green' : 'red') : '';
+        var wrClass = s.win_rate !== null ? (s.win_rate >= 60 ? 'green' : s.win_rate <= 30 ? 'red' : '') : '';
+        var strats = (s.strategies || []).join(', ');
+        return '<tr class="stock-row" data-idx="' + idx + '" style="cursor:pointer;">' +
+          '<td><strong>' + s.name + '</strong></td>' +
+          '<td style="color:#999;font-size:12px;">' + s.code + '</td>' +
+          '<td style="font-size:12px;">' + s.industry + '</td>' +
+          '<td><strong>' + s.picked_count + '</strong></td>' +
+          '<td class="' + wrClass + '">' + wr + '</td>' +
+          '<td class="' + aacClass + '">' + aac + '</td>' +
+          '<td>' + s.avg_score + '</td>' +
+          '<td style="font-size:12px;color:#888;">' + strats + '</td>' +
+        '</tr>';
+      }).join('');
+
+      // 点击行展开该股的选股明细
+      document.querySelectorAll('.stock-row').forEach(function(tr) {
+        tr.addEventListener('click', function() {
+          var idx = parseInt(this.getAttribute('data-idx'));
+          var s = allStocks[idx];
+          if (!s) return;
+          var detail = document.getElementById('stock-detail');
+          var picks = s.picks || [];
+          var html = '<h4 style="margin-bottom:8px;">📈 ' + s.name + ' (' + s.code + ') — 共被选中 ' + s.picked_count + ' 次</h4>';
+          html += '<table class="detail-table"><tr><th>日期</th><th>策略</th><th>评分</th><th>预测涨幅</th><th>实际涨幅</th><th>结果</th></tr>';
+          picks.forEach(function(p) {
+            var hit = p.hit;
+            var pc = p.predicted_change != null ? (p.predicted_change > 0 ? '+' : '') + p.predicted_change.toFixed(1) + '%' : '-';
+            var ac = p.actual_change != null ? (p.actual_change > 0 ? '+' : '') + p.actual_change.toFixed(2) + '%' : '-';
+            var acClass = hit === true ? 'green' : hit === false ? 'red' : '';
+            html += '<tr><td>' + p.date + '</td><td>' + p.strategy + '</td><td>' + (p.score != null ? p.score : '-') + '</td>' +
+              '<td>' + pc + '</td>' +
+              '<td class="' + acClass + '">' + ac + '</td>' +
+              '<td>' + (hit === true ? '✅' : hit === false ? '❌' : '⏳') + '</td></tr>';
+          });
+          html += '</table>';
+          detail.innerHTML = html;
+          detail.style.display = 'block';
+          detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      });
+    }
+
+    function filterStockTable() {
+      if (!allStocks) return;
+      var q = document.getElementById('stock-search').value.trim().toLowerCase();
+      if (!q) {
+        renderStockTable(allStocks);
+        return;
+      }
+      var filtered = allStocks.filter(function(s) {
+        return s.name.toLowerCase().indexOf(q) !== -1 ||
+               s.code.toLowerCase().indexOf(q) !== -1 ||
+               s.industry.toLowerCase().indexOf(q) !== -1;
+      });
+      renderStockTable(filtered);
+    }
+
+    // 页面加载时一并获取个股统计
+    loadStockStats();
   </script>
 </body>
 </html>

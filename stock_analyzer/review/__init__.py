@@ -171,6 +171,85 @@ def get_stats(strategy: str = None) -> dict:
     }
 
 
+def get_stock_stats() -> list:
+    """按股票代码聚合，返回每只股票的统计数据（选中次数、胜率、平均涨幅等）"""
+    history = _load_history()
+    stock_map = {}
+
+    for record in history:
+        date = record["date"]
+        strategy = record["strategy"]
+        for pick in record["picks"]:
+            code = pick.get("code", "")
+            if not code:
+                continue
+            if code not in stock_map:
+                stock_map[code] = {
+                    "code": code,
+                    "name": pick.get("name", "?"),
+                    "industry": pick.get("industry", "?"),
+                    "picked_count": 0,
+                    "wins": 0,
+                    "losses": 0,
+                    "no_data": 0,
+                    "total_score": 0.0,
+                    "total_predicted_change": 0.0,
+                    "total_actual_change": 0.0,
+                    "actual_count": 0,
+                    "last_picked": date,
+                    "first_picked": date,
+                    "picks": [],
+                }
+
+            s = stock_map[code]
+            s["picked_count"] += 1
+            s["total_score"] += float(pick.get("predicted_score", 0))
+            s["total_predicted_change"] += float(pick.get("predicted_change", 0))
+
+            if pick.get("hit") is True:
+                s["wins"] += 1
+            elif pick.get("hit") is False:
+                s["losses"] += 1
+            else:
+                s["no_data"] += 1
+
+            actual = pick.get("actual_change")
+            if actual is not None:
+                s["total_actual_change"] += float(actual)
+                s["actual_count"] += 1
+
+            if date > s["last_picked"]:
+                s["last_picked"] = date
+            if date < s["first_picked"]:
+                s["first_picked"] = date
+
+            s["picks"].append({
+                "date": date,
+                "strategy": strategy,
+                "predicted_change": pick.get("predicted_change"),
+                "actual_change": pick.get("actual_change"),
+                "hit": pick.get("hit"),
+                "score": pick.get("predicted_score"),
+            })
+
+    # 计算聚合指标
+    result = []
+    for s in stock_map.values():
+        verified = s["wins"] + s["losses"]
+        s["win_rate"] = round(s["wins"] / verified * 100, 1) if verified > 0 else None
+        s["avg_score"] = round(s["total_score"] / s["picked_count"], 1) if s["picked_count"] > 0 else 0
+        s["avg_predicted_change"] = round(s["total_predicted_change"] / s["picked_count"], 2) if s["picked_count"] > 0 else 0
+        s["avg_actual_change"] = round(s["total_actual_change"] / s["actual_count"], 2) if s["actual_count"] > 0 else None
+        s["strategies"] = list(set(p["strategy"] for p in s["picks"]))
+        # 明细按日期倒序
+        s["picks"].sort(key=lambda x: x["date"], reverse=True)
+        result.append(s)
+
+    # 按选中次数降序 ➜ 胜率降序
+    result.sort(key=lambda x: (-x["picked_count"], -(x["win_rate"] or 0)))
+    return result
+
+
 def print_review(strategy: str = None):
     """打印复盘报告"""
     stats = get_stats(strategy)
