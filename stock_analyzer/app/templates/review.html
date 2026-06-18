@@ -118,7 +118,6 @@
       var tb = document.getElementById('table-body');
       var rows = [];
       data.history.forEach(function(h, idx) { rows.push({ idx: idx, date: h.date, strategy: h.strategy, picks: h.picks||[] }); });
-      rows.reverse();
       rows.forEach(function(r) {
         var n = 0, m = 0;
         r.picks.forEach(function(p) { if (p.hit === true) m++; if (p.hit !== null) n++; });
