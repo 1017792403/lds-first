@@ -61,6 +61,11 @@ def scheduler_loop():
         minute = now.minute
 
         if hour in SCHEDULE_HOURS and minute == 0:
+            # 非交易日跳过（周末）
+            if now.weekday() >= 5:
+                time.sleep(61)
+                continue
+
             today_key = _get_today_key(hour)
             if today_key not in _ran_today:
                 _ran_today.add(today_key)
