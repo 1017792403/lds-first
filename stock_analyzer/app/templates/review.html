@@ -88,6 +88,28 @@
         '<div class="stat-card"><div class="stat-num">' + s.hit_rate + '%</div><div class="stat-label">综合胜率</div></div>' +
         '<div class="stat-card"><div class="stat-num">' + (s.avg_actual_change>0?'+':'') + s.avg_actual_change + '%</div><div class="stat-label">平均涨幅</div></div>';
 
+      // 三种策略各自的胜率
+      var ss = s.strategy_stats || {};
+      var stratNames = { basic: 'Basic', v2: 'V2', v3: 'V3' };
+      var stratColors = { basic: '#667eea', v2: '#e91e63', v3: '#2196f3' };
+      var stratHtml = '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid #eee;">';
+      ['basic', 'v2', 'v3'].forEach(function(k) {
+        var st = ss[k];
+        if (!st) return;
+        var hr_display = st.hit_rate > 0 ? st.hit_rate + '%' : '-';
+        var ac_display = st.avg_actual ? ((st.avg_actual > 0 ? '+' : '') + st.avg_actual + '%') : '-';
+        stratHtml +=
+          '<div style="flex:1;min-width:120px;padding:8px 12px;border-radius:6px;border-left:3px solid ' + stratColors[k] + ';background:#fafbff;">' +
+          '<div style="font-size:11px;font-weight:600;color:' + stratColors[k] + ';">' + stratNames[k] + '</div>' +
+          '<div style="display:flex;gap:12px;margin-top:4px;">' +
+          '<div><div style="font-size:16px;font-weight:700;">' + hr_display + '</div><div style="font-size:10px;color:#999;">胜率</div></div>' +
+          '<div><div style="font-size:16px;font-weight:700;">' + ac_display + '</div><div style="font-size:10px;color:#999;">涨幅</div></div>' +
+          '<div><div style="font-size:16px;font-weight:700;">' + st.verified + '</div><div style="font-size:10px;color:#999;">已复盘</div></div>' +
+          '</div></div>';
+      });
+      stratHtml += '</div>';
+      h.innerHTML += stratHtml;
+
       var map = {};
       data.history.forEach(function(h) {
         if (!map[h.date]) map[h.date] = {};

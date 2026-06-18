@@ -176,6 +176,24 @@ def get_stats(strategy: str = None) -> dict:
                if p["actual_change"] is not None]
     avg_actual = np.mean(actuals) if actuals else 0
 
+    # 按策略统计
+    strategy_stats = {}
+    for strat in ['basic', 'v2', 'v3']:
+        strat_picks = [p for r in history if r['strategy'] == strat for p in r['picks']]
+        strat_verified = [p for p in strat_picks if p["hit"] is not None]
+        strat_total = len(strat_picks)
+        strat_verified_total = len(strat_verified)
+        strat_hits = sum(1 for p in strat_verified if p["hit"])
+        strat_actuals = [p["actual_change"] for p in strat_verified
+                        if p["actual_change"] is not None]
+        strategy_stats[strat] = {
+            "total": strat_total,
+            "verified": strat_verified_total,
+            "hits": strat_hits,
+            "hit_rate": round(strat_hits / strat_verified_total * 100, 1) if strat_verified_total > 0 else 0,
+            "avg_actual": round(np.mean(strat_actuals), 2) if strat_actuals else 0,
+        }
+
     return {
         "total_sessions": len(history),
         "total_picks": total,
@@ -184,6 +202,7 @@ def get_stats(strategy: str = None) -> dict:
         "hit_rate": round(hit_rate * 100, 1),
         "avg_actual_change": round(avg_actual, 2),
         "strategies": list(set(r["strategy"] for r in history)),
+        "strategy_stats": strategy_stats,
     }
 
 
