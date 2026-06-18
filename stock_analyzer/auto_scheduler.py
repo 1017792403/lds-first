@@ -4,6 +4,7 @@
 """
 import os
 import sys
+import json
 import time
 import threading
 import builtins as _builtins
@@ -76,8 +77,74 @@ def scheduler_loop():
             time.sleep(30)
 
 
+def _load_review_dates() -> list:
+    """从 data/review_history.json 读取已有的日期列表"""
+    paths = [
+        os.path.join(os.getcwd(), "data", "review_history.json"),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "review_history.json"),
+    ]
+    for p in paths:
+        if os.path.exists(p):
+            with open(p, "r", encoding="utf-8") as f:
+                records = json.load(f)
+            return sorted(set(r["date"] for r in records))
+    return []
+
+
+def _catchup_missing_days():
+    """启动时检查是否有缺失的交易日，补录选股"""
+    from stock_analyzer.main import MODES
+    from stock_analyzer.review import record_picks
+
+    existing = _load_review_dates()
+    if not existing:
+        return
+
+    today = datetime.now().strftime("%Y%m%d")
+    last = existing[-1]
+
+    # 只补最近 3 个工作日的缺失
+    missing = [d for d in _get_recent_trading_days(today, 5) if d not in existing and d > last]
+    if not missing:
+        return
+
+    # 只补一天前的（太早的用 backfill 脚本单独跑更准）
+    for d in missing:
+        print(f"[Auto Scheduler] Catch-up: running strategies for {d}")
+
+    _old_print = _builtins.print
+    _builtins.print = lambda *a, **k: None
+    for mode in ['basic', 'v2', 'v3']:
+        try:
+            picks = MODES[mode]()
+            if picks:
+                record_picks(picks, mode)
+        except Exception:
+            pass
+    _builtins.print = _old_print
+    print(f"[Auto Scheduler] Catch-up done: strategies run for missing days")
+
+
+def _get_recent_trading_days(today: str, count: int) -> list:
+    """返回最近 N 个可能的交易日（粗略，跳过周末）"""
+    from datetime import datetime, timedelta
+    dt = datetime.strptime(today, "%Y%m%d")
+    days = []
+    while len(days) < count:
+        if dt.weekday() < 5:  # 周一到周五
+            days.append(dt.strftime("%Y%m%d"))
+        dt -= timedelta(days=1)
+    return sorted(days)
+
+
 def start():
     """启动调度器（在后台线程中运行）"""
+    # 启动时补录缺失天数
+    try:
+        _catchup_missing_days()
+    except Exception:
+        pass
+
     thread = threading.Thread(target=scheduler_loop, daemon=True)
     thread.start()
     print(f"[Auto Scheduler] Started: daily runs at {SCHEDULE_HOURS}:00")
