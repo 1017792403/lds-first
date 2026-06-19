@@ -10190,5 +10190,299 @@
       }
     ],
     "created_at": "2026-06-13T10:17:43.034238"
+  },
+  {
+    "date": "20260620",
+    "strategy": "basic",
+    "picks_count": 10,
+    "picks": [
+      {
+        "code": "688256",
+        "name": "寒武纪",
+        "industry": "半导体",
+        "predicted_score": 0.0,
+        "predicted_change": 14.2,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688333",
+        "name": "铂力特",
+        "industry": "通用设备",
+        "predicted_score": 0.0,
+        "predicted_change": 20.0,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300319",
+        "name": "麦捷科技",
+        "industry": "元件",
+        "predicted_score": 0.0,
+        "predicted_change": 20.02,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688300",
+        "name": "联瑞新材",
+        "industry": "非金属材料Ⅱ",
+        "predicted_score": 0.0,
+        "predicted_change": 14.98,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "603986",
+        "name": "兆易创新",
+        "industry": "半导体",
+        "predicted_score": 0.0,
+        "predicted_change": 7.33,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300420",
+        "name": "五洋自控",
+        "industry": "通用设备",
+        "predicted_score": 0.0,
+        "predicted_change": 15.77,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688131",
+        "name": "皓元医药",
+        "industry": "医疗服务",
+        "predicted_score": 0.0,
+        "predicted_change": 15.08,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300223",
+        "name": "北京君正",
+        "industry": "半导体",
+        "predicted_score": 0.0,
+        "predicted_change": 8.36,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "002436",
+        "name": "兴森科技",
+        "industry": "元件",
+        "predicted_score": 0.0,
+        "predicted_change": 8.91,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "002384",
+        "name": "东山精密",
+        "industry": "元件",
+        "predicted_score": 0.0,
+        "predicted_change": 6.26,
+        "actual_change": null,
+        "hit": null
+      }
+    ],
+    "created_at": "2026-06-20T00:42:14.825275"
+  },
+  {
+    "date": "20260620",
+    "strategy": "v2",
+    "picks_count": 10,
+    "picks": [
+      {
+        "code": "603986",
+        "name": "兆易创新",
+        "industry": "半导体",
+        "predicted_score": 0.0,
+        "predicted_change": 7.33,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688041",
+        "name": "海光信息",
+        "industry": "半导体",
+        "predicted_score": 0.0,
+        "predicted_change": 6.42,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "301071",
+        "name": "力量钻石",
+        "industry": "非金属材料Ⅱ",
+        "predicted_score": 0.0,
+        "predicted_change": 3.42,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "002384",
+        "name": "东山精密",
+        "industry": "元件",
+        "predicted_score": 0.0,
+        "predicted_change": 6.26,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688981",
+        "name": "中芯国际",
+        "industry": "半导体",
+        "predicted_score": 0.0,
+        "predicted_change": 4.45,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "603259",
+        "name": "药明康德",
+        "industry": "医疗服务",
+        "predicted_score": 0.0,
+        "predicted_change": 4.6,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "603688",
+        "name": "石英股份",
+        "industry": "非金属材料Ⅱ",
+        "predicted_score": 0.0,
+        "predicted_change": 1.53,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688300",
+        "name": "联瑞新材",
+        "industry": "非金属材料Ⅱ",
+        "predicted_score": 0.0,
+        "predicted_change": 14.98,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "600172",
+        "name": "黄河旋风",
+        "industry": "通用设备",
+        "predicted_score": 0.0,
+        "predicted_change": 5.34,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300179",
+        "name": "四方达",
+        "industry": "通用设备",
+        "predicted_score": 0.0,
+        "predicted_change": 5.55,
+        "actual_change": null,
+        "hit": null
+      }
+    ],
+    "created_at": "2026-06-20T00:42:15.920228"
+  },
+  {
+    "date": "20260620",
+    "strategy": "v3",
+    "picks_count": 10,
+    "picks": [
+      {
+        "code": "688008",
+        "name": "澜起科技",
+        "industry": "半导体",
+        "predicted_score": 82.0,
+        "predicted_change": 2.82,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "603993",
+        "name": "洛阳钼业",
+        "industry": "工业金属",
+        "predicted_score": 82.0,
+        "predicted_change": -0.64,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "000630",
+        "name": "铜陵有色",
+        "industry": "工业金属",
+        "predicted_score": 82.0,
+        "predicted_change": 1.19,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "000100",
+        "name": "TCL科技",
+        "industry": "光学光电子",
+        "predicted_score": 80.5,
+        "predicted_change": -2.34,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "688256",
+        "name": "寒武纪",
+        "industry": "半导体",
+        "predicted_score": 79.6,
+        "predicted_change": 14.2,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "603986",
+        "name": "兆易创新",
+        "industry": "半导体",
+        "predicted_score": 74.0,
+        "predicted_change": 7.33,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "601899",
+        "name": "紫金矿业",
+        "industry": "工业金属",
+        "predicted_score": 74.0,
+        "predicted_change": -2.43,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "000725",
+        "name": "京东方Ａ",
+        "industry": "光学光电子",
+        "predicted_score": 72.5,
+        "predicted_change": -1.5,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300088",
+        "name": "长信科技",
+        "industry": "光学光电子",
+        "predicted_score": 72.5,
+        "predicted_change": -1.89,
+        "actual_change": null,
+        "hit": null
+      },
+      {
+        "code": "300059",
+        "name": "东方财富",
+        "industry": "证券Ⅱ",
+        "predicted_score": 72.5,
+        "predicted_change": -2.31,
+        "actual_change": null,
+        "hit": null
+      }
+    ],
+    "created_at": "2026-06-20T00:42:20.034761"
   }
 ]
