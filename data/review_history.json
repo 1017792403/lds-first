@@ -64,8 +64,8 @@
         "industry": "半导体",
         "predicted_score": 70.0,
         "predicted_change": 15.47,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.35,
+        "hit": false
       },
       {
         "code": "688008",
@@ -73,8 +73,8 @@
         "industry": "半导体",
         "predicted_score": 70.0,
         "predicted_change": 5.04,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.76,
+        "hit": true
       },
       {
         "code": "300059",
@@ -108,8 +108,8 @@
         "industry": "半导体",
         "predicted_score": 0.0,
         "predicted_change": 7.55,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.21,
+        "hit": true
       },
       {
         "code": "688041",
@@ -135,8 +135,8 @@
         "industry": "非金属材料Ⅱ",
         "predicted_score": 0.0,
         "predicted_change": 10.51,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.77,
+        "hit": true
       },
       {
         "code": "002384",
