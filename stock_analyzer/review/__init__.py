@@ -76,7 +76,7 @@ def record_picks(picks: list, strategy: str = "basic",
             "code": p.get("code", p.get("stock_code", "")),
             "name": p.get("name", "?"),
             "industry": p.get("industry", p.get("ind_name", "")),
-            "predicted_score": float(p.get("score", p.get("final", 0))),
+            "predicted_score": float(p.get("score", p.get("final_score", p.get("final", 0)))),
             "predicted_change": float(p.get("change_pct", p.get("chg", 0))),
             "actual_change": None,  # 待回填
             "hit": None,            # 待计算
