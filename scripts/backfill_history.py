@@ -35,7 +35,7 @@ from stock_analyzer.analysis.screener import build_event_candidate_pool, get_eve
 
 builtins.print = _old_print
 
-DAYS = 60  # 拉取 60 天 K 线
+DAYS = 120  # 拉取 120 天 K 线（覆盖更多历史交易日）
 TRADING_DAYS_BACK = 30  # 回填 30 个交易日
 
 
