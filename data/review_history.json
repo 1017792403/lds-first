@@ -2558,8 +2558,8 @@
         "industry": "半导体",
         "predicted_score": 76.92717909559155,
         "predicted_change": 22.97,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 11.15,
+        "hit": true
       },
       {
         "code": "688183",
@@ -2576,8 +2576,8 @@
         "industry": "半导体",
         "predicted_score": 60.0769535321549,
         "predicted_change": 11.97,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.71,
+        "hit": true
       },
       {
         "code": "688362",
@@ -2585,8 +2585,8 @@
         "industry": "半导体",
         "predicted_score": 58.49511348971856,
         "predicted_change": 12.23,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.71,
+        "hit": true
       },
       {
         "code": "301526",
@@ -2594,8 +2594,8 @@
         "industry": "玻璃玻纤",
         "predicted_score": 58.113374549625725,
         "predicted_change": 17.02,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.85,
+        "hit": true
       },
       {
         "code": "688519",
@@ -2612,8 +2612,8 @@
         "industry": "玻璃玻纤",
         "predicted_score": 49.98643819580262,
         "predicted_change": 11.76,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 7.87,
+        "hit": true
       },
       {
         "code": "603399",
@@ -2621,8 +2621,8 @@
         "industry": "能源金属",
         "predicted_score": 48.13769842292575,
         "predicted_change": 11.1,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.35,
+        "hit": true
       },
       {
         "code": "000021",
@@ -2630,8 +2630,8 @@
         "industry": "消费电子",
         "predicted_score": 47.931087961153125,
         "predicted_change": 13.32,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 4.5,
+        "hit": true
       },
       {
         "code": "603629",
@@ -2639,8 +2639,8 @@
         "industry": "消费电子",
         "predicted_score": 47.8761528303431,
         "predicted_change": 13.32,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.91,
+        "hit": false
       }
     ],
     "created_at": "2026-06-24T14:41:39.926764"
@@ -2656,8 +2656,8 @@
         "industry": "半导体",
         "predicted_score": 57.346342185314654,
         "predicted_change": 7.91,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 11.81,
+        "hit": true
       },
       {
         "code": "688519",
@@ -2665,8 +2665,8 @@
         "industry": "元件",
         "predicted_score": 56.00079718127118,
         "predicted_change": 6.51,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.28,
+        "hit": true
       },
       {
         "code": "688041",
@@ -2692,8 +2692,8 @@
         "industry": "元件",
         "predicted_score": 45.80084703839576,
         "predicted_change": 8.55,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.12,
+        "hit": true
       },
       {
         "code": "688549",
@@ -2701,8 +2701,8 @@
         "industry": "电子化学品Ⅱ",
         "predicted_score": 44.659041647463106,
         "predicted_change": 6.8,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.0,
+        "hit": true
       },
       {
         "code": "002466",
@@ -2710,8 +2710,8 @@
         "industry": "能源金属",
         "predicted_score": 42.761459349842355,
         "predicted_change": 7.68,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.26,
+        "hit": false
       },
       {
         "code": "688548",
@@ -2719,8 +2719,8 @@
         "industry": "电子化学品Ⅱ",
         "predicted_score": 41.257140378278976,
         "predicted_change": 5.18,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.65,
+        "hit": true
       },
       {
         "code": "600183",
@@ -2728,8 +2728,8 @@
         "industry": "元件",
         "predicted_score": 41.063408558489826,
         "predicted_change": 5.66,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.99,
+        "hit": true
       },
       {
         "code": "688268",
@@ -2737,8 +2737,8 @@
         "industry": "电子化学品Ⅱ",
         "predicted_score": 40.78131184924895,
         "predicted_change": 3.73,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.72,
+        "hit": true
       }
     ],
     "created_at": "2026-06-24T14:41:40.122634"
@@ -2754,8 +2754,8 @@
         "industry": "半导体",
         "predicted_score": 77.0,
         "predicted_change": 3.65,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.51,
+        "hit": true
       },
       {
         "code": "688008",
@@ -2763,8 +2763,8 @@
         "industry": "半导体",
         "predicted_score": 77.0,
         "predicted_change": 3.54,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.1,
+        "hit": true
       },
       {
         "code": "002155",
@@ -2772,8 +2772,8 @@
         "industry": "贵金属",
         "predicted_score": 74.0,
         "predicted_change": 0.74,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.34,
+        "hit": false
       },
       {
         "code": "688079",
@@ -2781,8 +2781,8 @@
         "industry": "光学光电子",
         "predicted_score": 72.5,
         "predicted_change": 3.84,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.33,
+        "hit": false
       },
       {
         "code": "300059",
@@ -2790,8 +2790,8 @@
         "industry": "证券Ⅱ",
         "predicted_score": 72.5,
         "predicted_change": -3.59,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 4.96,
+        "hit": false
       },
       {
         "code": "603993",
@@ -2799,8 +2799,8 @@
         "industry": "工业金属",
         "predicted_score": 72.0,
         "predicted_change": 0.42,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.64,
+        "hit": false
       },
       {
         "code": "688041",
@@ -2808,8 +2808,8 @@
         "industry": "半导体",
         "predicted_score": 70.0,
         "predicted_change": 6.76,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 8.41,
+        "hit": true
       },
       {
         "code": "600497",
@@ -2817,8 +2817,8 @@
         "industry": "工业金属",
         "predicted_score": 69.0,
         "predicted_change": 11.11,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.4,
+        "hit": true
       },
       {
         "code": "688502",
@@ -2826,8 +2826,8 @@
         "industry": "光学光电子",
         "predicted_score": 68.5,
         "predicted_change": 12.86,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.88,
+        "hit": true
       },
       {
         "code": "600030",
@@ -2835,8 +2835,8 @@
         "industry": "证券Ⅱ",
         "predicted_score": 68.5,
         "predicted_change": -1.31,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.33,
+        "hit": false
       }
     ],
     "created_at": "2026-06-24T14:41:40.338583"
@@ -3440,8 +3440,8 @@
         "industry": "非金属材料Ⅱ",
         "predicted_score": 70.84194154393482,
         "predicted_change": 16.09,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.77,
+        "hit": true
       },
       {
         "code": "688256",
@@ -3449,8 +3449,8 @@
         "industry": "半导体",
         "predicted_score": 70.23591112550878,
         "predicted_change": 14.23,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.35,
+        "hit": false
       },
       {
         "code": "688227",
@@ -3503,8 +3503,8 @@
         "industry": "金属新材料",
         "predicted_score": 51.17840516808652,
         "predicted_change": 11.59,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.77,
+        "hit": false
       },
       {
         "code": "002842",
@@ -3538,8 +3538,8 @@
         "industry": "半导体",
         "predicted_score": 50.91156451167815,
         "predicted_change": 6.39,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.21,
+        "hit": true
       },
       {
         "code": "688041",
@@ -3556,8 +3556,8 @@
         "industry": "半导体",
         "predicted_score": 47.9334187313834,
         "predicted_change": 3.81,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.76,
+        "hit": true
       },
       {
         "code": "688786",
@@ -3815,8 +3815,8 @@
         "industry": "其他电子Ⅱ",
         "predicted_score": 52.33715057757362,
         "predicted_change": 8.81,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.08,
+        "hit": true
       }
     ],
     "created_at": "2026-06-24T14:41:43.367780"
@@ -3859,8 +3859,8 @@
         "industry": "半导体",
         "predicted_score": 44.39261115691476,
         "predicted_change": 2.29,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 14.2,
+        "hit": true
       },
       {
         "code": "688800",
@@ -4046,8 +4046,8 @@
         "industry": "金属新材料",
         "predicted_score": 62.54783617555616,
         "predicted_change": 11.94,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.33,
+        "hit": true
       },
       {
         "code": "688498",
@@ -4055,8 +4055,8 @@
         "industry": "半导体",
         "predicted_score": 61.874833194199454,
         "predicted_change": 10.2,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.19,
+        "hit": true
       },
       {
         "code": "688143",
@@ -4126,8 +4126,8 @@
         "industry": "电池",
         "predicted_score": 47.57330853562006,
         "predicted_change": 7.42,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.65,
+        "hit": false
       },
       {
         "code": "688627",
@@ -4144,8 +4144,8 @@
         "industry": "半导体",
         "predicted_score": 43.813647023326524,
         "predicted_change": 0.39,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 7.51,
+        "hit": true
       },
       {
         "code": "688183",
@@ -4180,8 +4180,8 @@
         "industry": "半导体",
         "predicted_score": 42.328717250177846,
         "predicted_change": 0.14,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 8.67,
+        "hit": true
       },
       {
         "code": "688257",
@@ -4420,8 +4420,8 @@
         "industry": "半导体",
         "predicted_score": 59.62989917027525,
         "predicted_change": 6.54,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.1,
+        "hit": false
       },
       {
         "code": "688008",
@@ -4429,8 +4429,8 @@
         "industry": "半导体",
         "predicted_score": 51.08921414113463,
         "predicted_change": 4.29,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.7,
+        "hit": true
       },
       {
         "code": "688041",
@@ -4661,8 +4661,8 @@
         "industry": "医疗美容",
         "predicted_score": 61.442667295622826,
         "predicted_change": 7.76,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.45,
+        "hit": false
       },
       {
         "code": "688788",
@@ -4697,8 +4697,8 @@
         "industry": "软件开发",
         "predicted_score": 55.680863112858546,
         "predicted_change": 9.55,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.39,
+        "hit": true
       }
     ],
     "created_at": "2026-06-24T14:41:45.995077"
@@ -4723,8 +4723,8 @@
         "industry": "航空装备Ⅱ",
         "predicted_score": 49.87977971550259,
         "predicted_change": 6.02,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.63,
+        "hit": false
       },
       {
         "code": "688297",
@@ -4910,8 +4910,8 @@
         "industry": "电子化学品Ⅱ",
         "predicted_score": 71.74157655665762,
         "predicted_change": 23.57,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -17.62,
+        "hit": false
       },
       {
         "code": "688456",
@@ -5008,8 +5008,8 @@
         "industry": "半导体",
         "predicted_score": 50.772882700768946,
         "predicted_change": 2.64,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.4,
+        "hit": false
       },
       {
         "code": "688525",
@@ -5258,8 +5258,8 @@
         "industry": "半导体",
         "predicted_score": 48.52848377089501,
         "predicted_change": 5.46,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 6.03,
+        "hit": true
       },
       {
         "code": "000970",
@@ -5311,8 +5311,8 @@
         "industry": "半导体",
         "predicted_score": 43.448290161436844,
         "predicted_change": 1.93,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.29,
+        "hit": true
       },
       {
         "code": "688072",
@@ -5596,8 +5596,8 @@
         "industry": "半导体",
         "predicted_score": 51.1724481775303,
         "predicted_change": 4.04,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.69,
+        "hit": false
       },
       {
         "code": "688800",
@@ -5623,8 +5623,8 @@
         "industry": "半导体",
         "predicted_score": 45.75579768482063,
         "predicted_change": 1.21,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.28,
+        "hit": false
       },
       {
         "code": "002240",
@@ -5801,8 +5801,8 @@
         "industry": "自动化设备",
         "predicted_score": 66.29868045654025,
         "predicted_change": 14.04,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.89,
+        "hit": false
       },
       {
         "code": "688507",
@@ -5837,8 +5837,8 @@
         "industry": "半导体",
         "predicted_score": 48.69435474032525,
         "predicted_change": 8.68,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 6.12,
+        "hit": true
       },
       {
         "code": "688183",
@@ -5846,8 +5846,8 @@
         "industry": "元件",
         "predicted_score": 47.879129943820985,
         "predicted_change": 1.92,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 11.41,
+        "hit": true
       },
       {
         "code": "688146",
@@ -5926,8 +5926,8 @@
         "industry": "半导体",
         "predicted_score": 39.85916881227624,
         "predicted_change": 1.5,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.39,
+        "hit": true
       },
       {
         "code": "688256",
@@ -5935,8 +5935,8 @@
         "industry": "半导体",
         "predicted_score": 39.72820287944201,
         "predicted_change": 0.89,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.57,
+        "hit": true
       },
       {
         "code": "688206",
@@ -6131,8 +6131,8 @@
         "industry": "自动化设备",
         "predicted_score": 52.73710442222088,
         "predicted_change": 10.65,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.79,
+        "hit": true
       },
       {
         "code": "688160",
@@ -6202,8 +6202,8 @@
         "industry": "光学光电子",
         "predicted_score": 42.3768082947165,
         "predicted_change": 4.68,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -11.08,
+        "hit": false
       },
       {
         "code": "003021",
@@ -6416,8 +6416,8 @@
         "industry": "其他电子Ⅱ",
         "predicted_score": 65.77536314144123,
         "predicted_change": 10.29,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -6.6,
+        "hit": false
       },
       {
         "code": "688378",
@@ -6425,8 +6425,8 @@
         "industry": "光学光电子",
         "predicted_score": 65.16173406240776,
         "predicted_change": 17.0,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.52,
+        "hit": true
       },
       {
         "code": "688549",
@@ -6478,8 +6478,8 @@
         "industry": "半导体",
         "predicted_score": 56.94496248885345,
         "predicted_change": 4.49,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -7.81,
+        "hit": false
       },
       {
         "code": "688020",
@@ -6532,8 +6532,8 @@
         "industry": "半导体",
         "predicted_score": 47.361619044778664,
         "predicted_change": 9.4,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -8.89,
+        "hit": false
       },
       {
         "code": "688800",
@@ -6772,8 +6772,8 @@
         "industry": "半导体",
         "predicted_score": 67.75758519444342,
         "predicted_change": 6.64,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.39,
+        "hit": false
       },
       {
         "code": "688008",
@@ -6781,8 +6781,8 @@
         "industry": "半导体",
         "predicted_score": 58.37674978665562,
         "predicted_change": 2.28,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.27,
+        "hit": true
       },
       {
         "code": "688525",
@@ -6790,8 +6790,8 @@
         "industry": "半导体",
         "predicted_score": 54.541892240125975,
         "predicted_change": 4.67,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 8.7,
+        "hit": true
       },
       {
         "code": "688017",
@@ -6977,8 +6977,8 @@
         "industry": "元件",
         "predicted_score": 57.858834771677564,
         "predicted_change": 7.13,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.41,
+        "hit": false
       },
       {
         "code": "688143",
@@ -6995,8 +6995,8 @@
         "industry": "半导体",
         "predicted_score": 51.654944419025206,
         "predicted_change": 10.79,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 16.41,
+        "hit": true
       },
       {
         "code": "688519",
@@ -7004,8 +7004,8 @@
         "industry": "元件",
         "predicted_score": 51.115612629755404,
         "predicted_change": 10.33,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.28,
+        "hit": false
       },
       {
         "code": "002436",
@@ -7075,8 +7075,8 @@
         "industry": "半导体",
         "predicted_score": 46.97770125914074,
         "predicted_change": 4.33,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 6.01,
+        "hit": true
       },
       {
         "code": "688668",
@@ -7102,8 +7102,8 @@
         "industry": "光学光电子",
         "predicted_score": 40.27343483889604,
         "predicted_change": 4.52,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 6.12,
+        "hit": true
       },
       {
         "code": "688313",
@@ -7138,8 +7138,8 @@
         "industry": "半导体",
         "predicted_score": 37.81042904799257,
         "predicted_change": 0.41,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 7.13,
+        "hit": true
       },
       {
         "code": "688498",
@@ -7307,8 +7307,8 @@
         "industry": "软件开发",
         "predicted_score": 60.06454608723374,
         "predicted_change": 6.97,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.4,
+        "hit": true
       },
       {
         "code": "300792",
@@ -7592,8 +7592,8 @@
         "industry": "白酒Ⅱ",
         "predicted_score": 65.49044847167585,
         "predicted_change": 4.36,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.24,
+        "hit": false
       },
       {
         "code": "002251",
@@ -7850,8 +7850,8 @@
         "industry": "元件",
         "predicted_score": 63.79118717272301,
         "predicted_change": 9.59,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -0.82,
+        "hit": false
       },
       {
         "code": "688347",
@@ -7859,8 +7859,8 @@
         "industry": "半导体",
         "predicted_score": 63.779725470117604,
         "predicted_change": 14.68,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.2,
+        "hit": false
       },
       {
         "code": "688006",
@@ -7966,8 +7966,8 @@
         "industry": "半导体",
         "predicted_score": 45.851333869037504,
         "predicted_change": 2.24,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.86,
+        "hit": false
       },
       {
         "code": "688525",
@@ -7975,8 +7975,8 @@
         "industry": "半导体",
         "predicted_score": 44.97020681230188,
         "predicted_change": 3.96,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.16,
+        "hit": true
       },
       {
         "code": "688662",
@@ -8144,8 +8144,8 @@
         "industry": "电网设备",
         "predicted_score": 68.58465301513289,
         "predicted_change": 8.06,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.35,
+        "hit": true
       },
       {
         "code": "600863",
@@ -8171,8 +8171,8 @@
         "industry": "半导体",
         "predicted_score": 61.53917369026168,
         "predicted_change": 7.4,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.62,
+        "hit": true
       },
       {
         "code": "600779",
@@ -8563,8 +8563,8 @@
         "industry": "工业金属",
         "predicted_score": 44.02081404943235,
         "predicted_change": 7.95,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.07,
+        "hit": false
       },
       {
         "code": "300139",
@@ -8768,8 +8768,8 @@
         "industry": "金属新材料",
         "predicted_score": 61.05276485477648,
         "predicted_change": 12.16,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.25,
+        "hit": false
       },
       {
         "code": "300835",
@@ -8813,8 +8813,8 @@
         "industry": "金属新材料",
         "predicted_score": 45.38221294554885,
         "predicted_change": 3.4,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.03,
+        "hit": false
       }
     ],
     "created_at": "2026-06-24T14:41:58.424803"
@@ -8830,8 +8830,8 @@
         "industry": "半导体",
         "predicted_score": 57.563027538795666,
         "predicted_change": 6.4,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.15,
+        "hit": false
       },
       {
         "code": "688256",
@@ -8839,8 +8839,8 @@
         "industry": "半导体",
         "predicted_score": 57.15967495859125,
         "predicted_change": 6.47,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.32,
+        "hit": true
       },
       {
         "code": "688012",
@@ -9035,8 +9035,8 @@
         "industry": "非金属材料Ⅱ",
         "predicted_score": 67.52487510931456,
         "predicted_change": 13.38,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.83,
+        "hit": true
       },
       {
         "code": "300907",
@@ -9329,8 +9329,8 @@
         "industry": "小家电",
         "predicted_score": 59.66367652212695,
         "predicted_change": 1.7,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.57,
+        "hit": false
       },
       {
         "code": "001896",
@@ -9338,8 +9338,8 @@
         "industry": "电力",
         "predicted_score": 49.58920470645617,
         "predicted_change": 10.01,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.73,
+        "hit": false
       },
       {
         "code": "000700",
@@ -9365,8 +9365,8 @@
         "industry": "电力",
         "predicted_score": 45.44413785870972,
         "predicted_change": 7.72,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.41,
+        "hit": false
       },
       {
         "code": "603119",
@@ -9383,8 +9383,8 @@
         "industry": "乘用车",
         "predicted_score": 42.96476454948508,
         "predicted_change": 6.2,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.63,
+        "hit": false
       },
       {
         "code": "600699",
@@ -9712,8 +9712,8 @@
         "industry": "半导体",
         "predicted_score": 56.784336863475104,
         "predicted_change": 4.8,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.25,
+        "hit": false
       },
       {
         "code": "688008",
@@ -9721,8 +9721,8 @@
         "industry": "半导体",
         "predicted_score": 52.83427486017838,
         "predicted_change": 4.12,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.89,
+        "hit": true
       },
       {
         "code": "688041",
@@ -9730,8 +9730,8 @@
         "industry": "半导体",
         "predicted_score": 48.44378940937881,
         "predicted_change": 3.17,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.08,
+        "hit": false
       },
       {
         "code": "688019",
@@ -10006,8 +10006,8 @@
         "industry": "半导体",
         "predicted_score": 49.768709738406784,
         "predicted_change": 3.37,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 4.12,
+        "hit": true
       },
       {
         "code": "688041",
@@ -10024,8 +10024,8 @@
         "industry": "半导体",
         "predicted_score": 44.62786943998192,
         "predicted_change": 8.41,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.28,
+        "hit": true
       },
       {
         "code": "688010",
@@ -10229,8 +10229,8 @@
         "industry": "元件",
         "predicted_score": 63.32092847742543,
         "predicted_change": 9.48,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.55,
+        "hit": false
       },
       {
         "code": "688628",
@@ -10300,8 +10300,8 @@
         "industry": "半导体",
         "predicted_score": 59.74090849471021,
         "predicted_change": 7.51,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.34,
+        "hit": false
       },
       {
         "code": "688676",
@@ -10327,8 +10327,8 @@
         "industry": "半导体",
         "predicted_score": 44.576137477830784,
         "predicted_change": 0.32,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -0.35,
+        "hit": false
       },
       {
         "code": "688017",
@@ -10345,8 +10345,8 @@
         "industry": "半导体",
         "predicted_score": 43.86612025303761,
         "predicted_change": 1.42,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 8.4,
+        "hit": true
       },
       {
         "code": "688777",
@@ -10496,8 +10496,8 @@
         "industry": "自动化设备",
         "predicted_score": 72.04986611068007,
         "predicted_change": 15.07,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.69,
+        "hit": true
       },
       {
         "code": "301696",
@@ -10523,8 +10523,8 @@
         "industry": "半导体",
         "predicted_score": 57.08557959943845,
         "predicted_change": 10.06,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.35,
+        "hit": true
       },
       {
         "code": "688320",
@@ -10568,8 +10568,8 @@
         "industry": "半导体",
         "predicted_score": 49.234947618674525,
         "predicted_change": 7.5,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -0.89,
+        "hit": false
       },
       {
         "code": "688037",
@@ -10799,8 +10799,8 @@
         "industry": "半导体",
         "predicted_score": 62.47759376867057,
         "predicted_change": 6.92,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.14,
+        "hit": true
       },
       {
         "code": "605296",
@@ -10826,8 +10826,8 @@
         "industry": "半导体",
         "predicted_score": 58.79937951239303,
         "predicted_change": 5.63,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.47,
+        "hit": false
       },
       {
         "code": "688249",
@@ -10844,8 +10844,8 @@
         "industry": "白酒Ⅱ",
         "predicted_score": 55.84422163934175,
         "predicted_change": 7.32,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.82,
+        "hit": false
       },
       {
         "code": "688267",
@@ -10853,8 +10853,8 @@
         "industry": "化学制品",
         "predicted_score": 55.223504599243704,
         "predicted_change": 5.56,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.71,
+        "hit": false
       },
       {
         "code": "600519",
@@ -10862,8 +10862,8 @@
         "industry": "白酒Ⅱ",
         "predicted_score": 52.13921837447994,
         "predicted_change": 0.31,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -0.69,
+        "hit": false
       },
       {
         "code": "600199",
@@ -11182,8 +11182,8 @@
         "industry": "半导体",
         "predicted_score": 53.90971196970497,
         "predicted_change": 6.29,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.28,
+        "hit": false
       },
       {
         "code": "688012",
