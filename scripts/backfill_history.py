@@ -38,6 +38,26 @@ builtins.print = _old_print
 DAYS = 60  # 拉取 60 天 K 线
 TRADING_DAYS_BACK = 30  # 回填 30 个交易日
 
+# 全局缓存：股票代码 -> 真实名称
+_NAME_CACHE = {}
+def _get_stock_name(code: str) -> str:
+    if not _NAME_CACHE:
+        _init_name_cache()
+    return _NAME_CACHE.get(code, "")
+def _init_name_cache():
+    try:
+        from stock_analyzer.data.loader import load_sw_classification, _to_tencent_code
+        from stock_analyzer.data.fetcher import fetch_quotes
+        sd = load_sw_classification()
+        for i in range(0, len(sd), 80):
+            batch = sd["tc"].iloc[i:i+80].tolist()
+            quotes = fetch_quotes(batch, use_cache=False)
+            for _, row in quotes.iterrows():
+                _NAME_CACHE[row["tc"][2:]] = row["name"]
+        _old_print(f"[backfill] cached {len(_NAME_CACHE)} stock names")
+    except Exception:
+        pass
+
 
 def progress(msg):
     print(f"  {msg}", file=sys.__stdout__)
@@ -78,7 +98,7 @@ def build_daily_snapshot(stock_data, kline_data, target_date):
         
         records.append({
             "stock_code": stock["stock_code"],
-            "name": stock.get("ind_name", ""),
+            "name": _get_stock_name(stock["stock_code"]) or stock["ind_name"],
             "industry_code": stock.get("industry_code", ""),
             "l2_code": stock["l2_code"],
             "ind_name": stock["ind_name"],
@@ -164,7 +184,7 @@ def _run_v3_for_date(df, target_date):
         final = tec * 0.40 + ei["event_score"] * 0.20 + ei["exposure_score"] * 0.10 + psi * 0.30
         
         results.append({
-            "tc": tc, "code": s["stock_code"], "name": s["name"],
+            "tc": tc, "code": s["stock_code"], "name": _get_stock_name(s["stock_code"]) or s["ind_name"],
             "industry": s["ind_name"], "l2_code": l2c,
             "price": float(s["price"]), "change_pct": chg,
             "final_score": round(final, 1), "final": round(final, 1),
