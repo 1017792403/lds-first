@@ -1623,8 +1623,8 @@
         "industry": "半导体",
         "predicted_score": 51.07014285088276,
         "predicted_change": 1.04,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -6.53,
+        "hit": false
       },
       {
         "code": "601898",
@@ -3342,8 +3342,8 @@
         "industry": "半导体",
         "predicted_score": 63.20364024972923,
         "predicted_change": 7.66,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 1.19,
+        "hit": true
       },
       {
         "code": "688523",
@@ -5106,8 +5106,8 @@
         "industry": "半导体",
         "predicted_score": 51.58545491289431,
         "predicted_change": 6.39,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.21,
+        "hit": true
       },
       {
         "code": "688041",
@@ -8296,8 +8296,8 @@
         "industry": "半导体",
         "predicted_score": 47.41801004862729,
         "predicted_change": 9.4,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -8.89,
+        "hit": false
       },
       {
         "code": "688800",
@@ -8536,8 +8536,8 @@
         "industry": "半导体",
         "predicted_score": 67.74492794244745,
         "predicted_change": 6.64,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.39,
+        "hit": false
       },
       {
         "code": "688008",
@@ -8839,8 +8839,8 @@
         "industry": "半导体",
         "predicted_score": 47.004685594590924,
         "predicted_change": 4.33,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 6.01,
+        "hit": true
       },
       {
         "code": "688668",
@@ -11788,8 +11788,8 @@
         "industry": "半导体",
         "predicted_score": 44.62786943998192,
         "predicted_change": 8.41,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.28,
+        "hit": true
       },
       {
         "code": "688010",
@@ -12064,8 +12064,8 @@
         "industry": "半导体",
         "predicted_score": 59.74090849471021,
         "predicted_change": 7.51,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.34,
+        "hit": false
       },
       {
         "code": "688676",
