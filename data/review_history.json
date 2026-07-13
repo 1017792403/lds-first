@@ -304,8 +304,8 @@
         "industry": "贵金属",
         "predicted_score": 77.5,
         "predicted_change": 3.24,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 0.76,
+        "hit": true
       },
       {
         "code": "688008",
@@ -313,8 +313,8 @@
         "industry": "半导体",
         "predicted_score": 77.0,
         "predicted_change": -8.04,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -1.9,
+        "hit": true
       },
       {
         "code": "688256",
@@ -322,8 +322,8 @@
         "industry": "半导体",
         "predicted_score": 77.0,
         "predicted_change": -9.27,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 4.86,
+        "hit": false
       },
       {
         "code": "688041",
@@ -331,8 +331,8 @@
         "industry": "半导体",
         "predicted_score": 77.0,
         "predicted_change": -3.55,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.84,
+        "hit": false
       },
       {
         "code": "688502",
@@ -340,8 +340,8 @@
         "industry": "光学光电子",
         "predicted_score": 72.5,
         "predicted_change": 1.13,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 2.98,
+        "hit": true
       },
       {
         "code": "688122",
@@ -349,8 +349,8 @@
         "industry": "航空装备Ⅱ",
         "predicted_score": 72.0,
         "predicted_change": 5.04,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -6.91,
+        "hit": false
       },
       {
         "code": "688206",
@@ -358,8 +358,8 @@
         "industry": "软件开发",
         "predicted_score": 67.5,
         "predicted_change": -10.73,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 6.45,
+        "hit": false
       },
       {
         "code": "603993",
@@ -367,8 +367,8 @@
         "industry": "工业金属",
         "predicted_score": 66.0,
         "predicted_change": -0.23,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.37,
+        "hit": true
       },
       {
         "code": "600362",
@@ -376,8 +376,8 @@
         "industry": "工业金属",
         "predicted_score": 66.0,
         "predicted_change": 3.88,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.46,
+        "hit": false
       },
       {
         "code": "688629",
@@ -385,8 +385,8 @@
         "industry": "军工电子Ⅱ",
         "predicted_score": 64.5,
         "predicted_change": -8.18,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 5.21,
+        "hit": false
       }
     ],
     "created_at": "2026-07-11T20:44:34.300888"
@@ -402,8 +402,8 @@
         "industry": "医疗服务",
         "predicted_score": 44.253460643302326,
         "predicted_change": 7.43,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -0.94,
+        "hit": false
       },
       {
         "code": "688578",
@@ -411,8 +411,8 @@
         "industry": "化学制药",
         "predicted_score": 43.13648358478983,
         "predicted_change": 3.09,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.41,
+        "hit": false
       },
       {
         "code": "688046",
@@ -420,8 +420,8 @@
         "industry": "医疗服务",
         "predicted_score": 42.70104540929074,
         "predicted_change": 6.13,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.71,
+        "hit": false
       },
       {
         "code": "688131",
@@ -429,8 +429,8 @@
         "industry": "医疗服务",
         "predicted_score": 41.544115625991594,
         "predicted_change": 4.6,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.8,
+        "hit": false
       },
       {
         "code": "688799",
@@ -438,8 +438,8 @@
         "industry": "化学制药",
         "predicted_score": 41.226988153807994,
         "predicted_change": 7.95,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.71,
+        "hit": false
       },
       {
         "code": "301171",
@@ -447,8 +447,8 @@
         "industry": "广告营销",
         "predicted_score": 40.26875396515938,
         "predicted_change": 6.72,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -6.27,
+        "hit": false
       },
       {
         "code": "600986",
@@ -456,8 +456,8 @@
         "industry": "广告营销",
         "predicted_score": 40.08262962793985,
         "predicted_change": 6.87,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.43,
+        "hit": false
       },
       {
         "code": "688321",
@@ -465,8 +465,8 @@
         "industry": "化学制药",
         "predicted_score": 39.55879532600053,
         "predicted_change": 3.08,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -0.61,
+        "hit": false
       },
       {
         "code": "688068",
@@ -474,8 +474,8 @@
         "industry": "医疗器械",
         "predicted_score": 38.62677264070048,
         "predicted_change": 6.55,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.29,
+        "hit": false
       },
       {
         "code": "688186",
@@ -483,8 +483,8 @@
         "industry": "风电设备",
         "predicted_score": 38.405095126403324,
         "predicted_change": 6.68,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.6,
+        "hit": false
       }
     ],
     "created_at": "2026-07-11T20:44:34.047648"
@@ -500,8 +500,8 @@
         "industry": "航天装备Ⅱ",
         "predicted_score": 69.31353696247582,
         "predicted_change": 22.38,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -8.48,
+        "hit": false
       },
       {
         "code": "300065",
@@ -509,8 +509,8 @@
         "industry": "航海装备Ⅱ",
         "predicted_score": 65.14216120575827,
         "predicted_change": 22.15,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -13.2,
+        "hit": false
       },
       {
         "code": "688710",
@@ -518,8 +518,8 @@
         "industry": "医疗服务",
         "predicted_score": 61.910659328316555,
         "predicted_change": 18.2,
-        "actual_change": null,
-        "hit": null
+        "actual_change": 3.72,
+        "hit": true
       },
       {
         "code": "300071",
@@ -527,8 +527,8 @@
         "industry": "广告营销",
         "predicted_score": 60.92643213510168,
         "predicted_change": 20.34,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -5.09,
+        "hit": false
       },
       {
         "code": "300105",
@@ -536,8 +536,8 @@
         "industry": "环保设备Ⅱ",
         "predicted_score": 57.88359566029811,
         "predicted_change": 18.38,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -4.28,
+        "hit": false
       },
       {
         "code": "300786",
@@ -545,8 +545,8 @@
         "industry": "环保设备Ⅱ",
         "predicted_score": 57.27450639065107,
         "predicted_change": 18.02,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -15.48,
+        "hit": false
       },
       {
         "code": "688202",
@@ -554,8 +554,8 @@
         "industry": "医疗服务",
         "predicted_score": 56.67371011364786,
         "predicted_change": 13.73,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -2.01,
+        "hit": false
       },
       {
         "code": "688238",
@@ -563,8 +563,8 @@
         "industry": "医疗服务",
         "predicted_score": 56.62288633913977,
         "predicted_change": 14.7,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -0.45,
+        "hit": false
       },
       {
         "code": "002828",
@@ -572,8 +572,8 @@
         "industry": "油服工程",
         "predicted_score": 55.87775419823318,
         "predicted_change": 17.32,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -3.04,
+        "hit": false
       },
       {
         "code": "688319",
@@ -581,8 +581,8 @@
         "industry": "生物制品",
         "predicted_score": 50.99095362649732,
         "predicted_change": 11.96,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -11.2,
+        "hit": false
       }
     ],
     "created_at": "2026-07-11T20:44:33.778281"
