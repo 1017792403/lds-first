@@ -108,8 +108,8 @@
         "industry": "软件开发",
         "predicted_score": 50.062691574912826,
         "predicted_change": 1.18,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -6.14,
+        "hit": false
       },
       {
         "code": "688046",
@@ -135,8 +135,8 @@
         "industry": "影视院线",
         "predicted_score": 41.80539718786275,
         "predicted_change": 11.52,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -7.74,
+        "hit": false
       },
       {
         "code": "300058",
@@ -171,8 +171,8 @@
         "industry": "化学制药",
         "predicted_score": 40.70286845302997,
         "predicted_change": 13.94,
-        "actual_change": null,
-        "hit": null
+        "actual_change": -9.46,
+        "hit": false
       },
       {
         "code": "688068",
